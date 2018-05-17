@@ -1,3 +1,10 @@
+.DS_Store
+.grunt
+docs/dist
+docs/docs
+docs/examples/libs
 node_modules
-*.idea
-bundle.js
+assets
+npm-debug.log
+ts-dist
+.idea
