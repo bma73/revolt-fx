@@ -1,13 +1,11 @@
 {
   "name": "revolt-fx",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/revolt-fx.min.js",
   "typings": "index.d.ts",
   "description": "Particle system for Pixi.js",
   "author": "Björn Acker <bjoern.acker@gmail.com>",
-  "contributors": [
-
-  ],
+  "contributors": [],
   "scripts": {
     "clean": "rimraf docs/docs docs/dist .publish",
     "lint": "eslint src",
