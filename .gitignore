@@ -1,10 +1,4 @@
 .DS_Store
-.grunt
-docs/dist
-docs/docs
-docs/examples/libs
 node_modules
-assets
 npm-debug.log
-ts-dist
 .idea
