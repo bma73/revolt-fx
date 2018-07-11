@@ -55,19 +55,19 @@
 
         },
 
-        update: function () {
-           this.shield.update();
+        update: function (dt) {
+
+           this.shield.update(dt);
 
            var n = this.guns.length;
            while (n--) {
-               this.guns[n].update();
+               this.guns[n].update(dt);
            }
 
             n = this.shots.length;
             while (n--) {
-                this.shots[n].update();
+                this.shots[n].update(dt);
             }
-
         },
 
         stop: function (app, fx) {
@@ -142,7 +142,7 @@
 
     };
 
-    Gun.prototype.update = function () {
+    Gun.prototype.update = function (dt) {
         var dx = this.target.x - this.x;
         var dy = this.target.y - this.y;
         this.rotation = Math.atan2(dy, dx);
@@ -177,9 +177,9 @@
 
     Shot.prototype = Object.create(PIXI.Sprite.prototype);
 
-    Shot.prototype.update = function () {
-        this.x += this.dx * this.speed;
-        this.y += this.dy * this.speed;
+    Shot.prototype.update = function (dt) {
+        this.x += this.dx * this.speed * dt;
+        this.y += this.dy * this.speed * dt;
 
         var dx = this.x - this.shield.x;
         var dy = this.y - this.shield.y;

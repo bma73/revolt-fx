@@ -80,7 +80,7 @@
         },
 
 
-        update: function () {
+        update: function (dt) {
             if ((this.mod++) % 40 === 0 && Math.random() > 0.5 && this.saucerList.length < 8) {
                 var saucer = new Saucer();
                 this.content.addChild(saucer);
@@ -89,7 +89,7 @@
 
             var n = this.saucerList.length;
             while (n--) {
-                this.saucerList[n].update();
+                this.saucerList[n].update(dt);
             }
         },
 
@@ -104,7 +104,6 @@
         resize: function() {
         }
     };
-
 
 
     var Saucer = function () {
@@ -126,8 +125,8 @@
         TweenMax.to(this, 0.2, {pixi: {y: this.y - 100, alpha: 0, ease: Quart.easeOut}});
     };
 
-    Saucer.prototype.update = function () {
-        this.x -= this.speed;
+    Saucer.prototype.update = function (dt) {
+        this.x -= this.speed * dt;
         this.y = this.baseY + Math.sin(this.mod++ * 0.06) * 10;
         if (this.x + this.width < 0) {
             this.init();

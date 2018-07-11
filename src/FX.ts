@@ -37,6 +37,7 @@ export class FX {
     public effectSequenceCount: number = 0;
     public maxParticles: number = 5000;
     public particleFac: number = 1;
+    public fix
 
     private _active: boolean = false;
     private _timeElapsed: number;

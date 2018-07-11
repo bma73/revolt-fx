@@ -54,11 +54,11 @@
             });
         },
 
-        update: function () {
+        update: function (dt) {
             var n = this.ships.length;
             while (n--) {
                 var ship = this.ships[n];
-                ship.update();
+                ship.update(dt);
                 if (ship.x > example.width + 200) {
                     ship.dispose();
                     var index = this.ships.indexOf(ship);
@@ -101,7 +101,7 @@
 
     BigSpaceship.prototype = Object.create(PIXI.Sprite.prototype);
 
-    BigSpaceship.prototype.update = function () {
+    BigSpaceship.prototype.update = function (dt) {
         var d = Math.sin(this.mod++ * 0.01);
         this.y = this.startY + d * 60;
     };
@@ -142,9 +142,9 @@
     };
     Spaceship.prototype = Object.create(PIXI.Sprite.prototype);
 
-    Spaceship.prototype.update = function () {
-        this.x += this.dx * this.speed;
-        this.y += this.dy * this.speed;
+    Spaceship.prototype.update = function (dt) {
+        this.x += this.dx * this.speed * dt;
+        this.y += this.dy * this.speed * dt;
     };
     Spaceship.prototype.dispose = function () {
         this.emitter.stop(false);

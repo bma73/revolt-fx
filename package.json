@@ -1,10 +1,10 @@
 {
   "name": "revolt-fx",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Particle and Effect System for Pixi.js",
   "main": "./lib/index.js",
   "scripts": {},
-  "author": "Björn Acker <bjoern.acker@gmail.com>",
+  "author": "Björn Acker <bjoern@electronauts.net>",
   "license": "MIT",
   "devDependencies": {
     "@types/jszip": "^3.1.4",

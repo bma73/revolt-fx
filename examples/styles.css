@@ -24,16 +24,13 @@ html, body {
     margin-left: auto;
 }
 
-
 @media screen and (max-height:450px) {
     .logo-container {
        display: none;
     }
 }
 
-
-
 canvas {
     border-radius: 8px;
-
+    background-color: black;
 }

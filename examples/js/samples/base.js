@@ -79,12 +79,17 @@ var example = {
         //Setup app
         var app = this.app = new PIXI.Application(example.width, example.height,
             {
-                backgroundColor: 0x222222,
+                backgroundColor: 0,
                 resolution: 1,
                 autoResize: true
             });
-        document.getElementById('canvas').appendChild(app.view);
 
+        //Hack WebGL Add BlendMode
+        if (app.renderer.type == 1) {
+            app.renderer.state.blendModes[PIXI.BLEND_MODES.ADD] = [app.renderer.gl.ONE, app.renderer.gl.ONE];
+        }
+
+        document.getElementById('canvas').appendChild(app.view);
 
         var container = this.container = new PIXI.Container();
 
@@ -103,6 +108,7 @@ var example = {
         app.stage.addChild(container);
 
         containers.back.beginFill(0xffffff).drawRect(0, 0, this.width, this.height).endFill();
+        containers.back.visible = false;
 
         containers.fader.beginFill(0x0a0a0a).drawRect(0, 0, this.width, this.height).endFill();
         containers.fader.visible = false;
@@ -122,10 +128,16 @@ var example = {
         containers.stats.addChild(stats);
         containers.stats.visible = false;
 
-        var info = this.infoText = new PIXI.Text('', {fontFamily: fonts, fontWeight: 300, fontSize: 20, fill: 0x999999});
+        var info = this.infoText = new PIXI.Text('', {fontFamily: fonts, fontWeight: 300, fontSize: 25, fill: 0x999999});
         info.x = 10;
         info.y = 10;
         containers.stats.addChild(info);
+
+        var loading = new PIXI.Text('Loading...', {fontFamily: fonts, fontWeight: 100, fontSize: 40, fill: 0x999999});
+        loading.anchor.set(0.5);
+        loading.x = example.width * 0.5;
+        loading.y = example.height * 0.5;
+        container.addChild(loading);
 
 
         //Create RevoltFX instance
@@ -141,11 +153,13 @@ var example = {
         var that = this;
         //Load the bundle data and the example spritesheet
         PIXI.loader
-            .add('fx_settings', 'assets/default-bundle.json')
-            .add('fx_spritesheet', 'assets/revoltfx-spritesheet.json')
-            .add('example_spritesheet', 'assets/rfx-examples.json')
+            .add('fx_settings', 'assets/default-bundle.json?' + Date.now())
+            .add('fx_spritesheet', 'assets/revoltfx-spritesheet.json?' + Date.now())
+            .add('example_spritesheet', 'assets/rfx-examples.json?' + Date.now())
             .load(function (loader, resources) {
 
+                containers.back.visible = true;
+                container.removeChild(loading);
 
                 var back = PIXI.Sprite.fromFrame('gradient1');
                 back.width = example.width;
@@ -173,7 +187,6 @@ var example = {
                     example.next(-1);
                 });
 
-
                 //Init the bundle
                 fx.initBundle(resources.fx_settings.data);
 
@@ -183,9 +196,8 @@ var example = {
 
                 example.show(example.index);
 
-
                 TweenMax.to(containers.fader, 0.3, {
-                    pixi: {alpha: 0}, onComplete: function () {
+                    pixi: {alpha: 0}, delay: 1, onComplete: function () {
                         containers.fader.visible = false;
                     }
                 })
@@ -201,8 +213,6 @@ var example = {
             var scale = h2 / example.height;
             container.scale.set(scale);
             app.renderer.resize(w, h2);
-
-            if (that.currentExample) that.currentExample.resize();
         };
 
         window.addEventListener('resize', resize);

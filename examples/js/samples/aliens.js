@@ -36,7 +36,7 @@
             content.on('pointerdown', function (e) {
 
                 var local = e.data.getLocalPosition(content);
-                that.laser.y = local.y;
+                laser.y = local.y;
 
                 var shot = new Shot(fx, content, that.aliens, that.shots);
                 content.addChild(shot);
@@ -50,17 +50,17 @@
             this.mod = 60;
 
             this.fx = fx;
-            this.mousePos = app.renderer.plugins.interaction.mouse.global;
+            this.mouse = app.renderer.plugins.interaction.mouse;
 
         },
 
 
-        update: function () {
+        update: function (dt) {
 
-            if (this.mousePos.y > 0) {
-                this.laser.y = this.mousePos.y;
+            //Is desktop?
+            if (this.mouse.global.y > 0) {
+                this.laser.y = this.mouse.getLocalPosition(this.content).y;
             }
-
 
             if ((this.mod++) % 40 === 0 && Math.random() > 0.5 && this.aliens.length < 8) {
                 var alien = new Alien(this.fx, this.container, this.aliens);
@@ -70,12 +70,12 @@
 
             var n = this.shots.length;
             while (n--) {
-                this.shots[n].update();
+                this.shots[n].update(dt);
             }
 
             n = this.aliens.length;
             while (n--) {
-                this.aliens[n].update();
+                this.aliens[n].update(dt);
             }
         },
 
@@ -87,7 +87,7 @@
             fx.stopAllEffects();
         },
 
-        resize: function() {
+        resize: function () {
         }
     };
 
@@ -174,8 +174,8 @@
         });
     };
 
-    Alien.prototype.update = function () {
-        this.x -= this.speed;
+    Alien.prototype.update = function (dt) {
+        this.x -= this.speed * dt;
         this.y = this.baseY + Math.sin(this.mod++ * 0.06) * 10;
         if (this.x + this.width < 0) {
             this.init();
@@ -203,8 +203,8 @@
 
     Shot.prototype = Object.create(PIXI.Sprite.prototype);
 
-    Shot.prototype.update = function () {
-        this.x += this.speed;
+    Shot.prototype.update = function (dt) {
+        this.x += this.speed * dt;
         if (this.x - this.width > example.width) {
             this.dispose();
             return;
