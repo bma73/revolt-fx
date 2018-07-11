@@ -280,6 +280,15 @@ sequence.on.triggerActivated.add(triggerValue => {
 });
 ```
 
+#### Update
+Call the update method every frame
+
+```js
+app.ticker.add(function () {
+    //Update the RevoltFX instance
+    fx.update();
+});
+```
 
 #### "Add" BlendMode artifacts with WebGL renderer####
 
