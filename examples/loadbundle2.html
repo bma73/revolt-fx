@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>RevoltFX // Load Bundle</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.1/pixi.js"></script>
+    <script src="js/revoltfx.min.js"></script>
+    <link href="styles.css" rel=stylesheet>
+</head>
+<body>
+<div id="canvas">
+</div>
+<script src="js/setup-app.js"></script>
+<script>
+
+    //Create a RevoltFX instance
+    var fx = new revolt.FX();
+
+    var rfxBundleSettings = 'assets/default-bundle.json';
+    var rfxSpritesheet = 'assets/revoltfx-spritesheet.json';
+    var additionalAssets = ['assets/rfx-examples.json'];
+
+    //Load bundle files and the additional example spritesheet
+    fx.loadBundleFiles(rfxBundleSettings, rfxSpritesheet, null, additionalAssets).then(function (data) {
+
+        var content = new PIXI.Container();
+        content.x = width * 0.5;
+        content.y = height * 0.5;
+        app.stage.addChild(content);
+
+        var logo = PIXI.Sprite.from('logo');
+        logo.anchor.set(0.5);
+        logo.alpha = 0.6;
+        content.addChild(logo);
+
+        var emitter = fx.getParticleEmitter('plasma-corona');
+        emitter.init(content, true, 1.9);
+
+        app.ticker.add(function () {
+            //Update the RevoltFX instance
+            fx.update();
+        });
+
+    }).catch(function (err) {
+        console.log('Error', err);
+    });
+
+</script>
+</body>
+</html>

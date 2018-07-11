@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>RevoltFX // Events Particle Emitter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.1/pixi.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+    <script src="js/revoltfx.min.js"></script>
+    <link href="styles.css" rel=stylesheet>
+</head>
+<body>
+<div id="canvas">
+</div>
+
+<script src="js/setup-app.js"></script>
+
+<script>
+
+    var container = new PIXI.Container();
+    var debug = new PIXI.Graphics();
+    app.stage.addChild(container);
+    app.stage.addChild(debug);
+
+    //Create a RevoltFX instance
+    var fx = new revolt.FX();
+
+    //Create a JSZip instance and pass it to the "loadBundleZip" method
+    var zip = new JSZip();
+
+    fx.loadBundleZip('assets/default-bundle.zip', zip, ['assets/rfx-examples.json']).then(function (data) {
+
+        var emitter = fx.getParticleEmitter('top-stone-splash');
+        emitter.init(container);
+        emitter.x = width * 0.5;
+        emitter.y = height * 0.5;
+
+        //Register for a particle spawned signal (event)
+        emitter.on.particleSpawned.add(function (particle) {
+            drawDot(particle.x, particle.y, 20, 0x00ff00);
+
+            //Register for an update signal for that particle
+            particle.on.updated.add(function(particle) {
+                drawDot(particle.x, particle.y, 5, 0x00ff00);
+            });
+
+            //Register for a died signal for that particle
+            particle.on.died.add(function(particle) {
+                drawDot(particle.x, particle.y, 15, 0xff0000);
+            });
+        });
+
+        emitter.on.completed.addOnce(function(emitter) {
+            console.log('Done');
+        });
+
+    }).catch(function (err) {
+        console.log('Error', err);
+    });
+
+    app.ticker.add(function () {
+        //Update the RevoltFX instance
+        fx.update();
+    });
+
+    function drawDot(x, y, size, color) {
+        debug.beginFill(color, 0.2).drawCircle(x, y, size).endFill();
+    }
+
+</script>
+</body>
+</html>

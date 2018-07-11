@@ -1,28 +1,56 @@
 /// <reference types="pixi.js" />
-import { BaseEmitterCore } from "./core/BaseEmitterCore";
-import { IEmitterSettings } from "./RevoltEffects";
-import { Particle } from "./Particle";
 import { BaseEffect } from "./BaseEffect";
-export declare class ParticleEmitter extends BaseEffect {
-    parent: any;
+import { IEmitterSettings, IParticleEmitterParent } from "./FX";
+import { BaseEmitterCore } from "./core/BaseEmitterCore";
+import { Particle } from "./Particle";
+import { FXSignal } from "./util/FXSignal";
+export interface IParticleEmitterSignals {
+    started: FXSignal;
+    completed: FXSignal;
+    exhausted: FXSignal;
+    particleSpawned: FXSignal;
+    particleBounced: FXSignal;
+    particleDied: FXSignal;
+    particleUpdated: FXSignal;
+}
+export declare class ParticleEmitter extends BaseEffect implements IParticleEmitterParent {
+    infinite: boolean;
+    target: PIXI.DisplayObject;
+    targetOffset: number;
+    core: BaseEmitterCore;
     settings: IEmitterSettings;
+    autoRecycleOnComplete: boolean;
     private _particles;
     private _particleCount;
-    private _maxParticles;
-    private _core;
+    private _spawnOnComplete;
+    private _childEmitters;
+    private _hasChildEmitters;
+    private _xPosIntialized;
+    private _yPosIntialized;
+    private _nextSpawnTime;
+    private _scaleMod;
+    private _paused;
+    __parent: IParticleEmitterParent;
+    __adoptRotation: boolean;
+    __on: IParticleEmitterSignals;
     constructor(componentId: string);
-    init(container: PIXI.Container, autoStart?: boolean): ParticleEmitter;
+    init(container: PIXI.Container, autoStart?: boolean, scaleMod?: number): ParticleEmitter;
     start(): ParticleEmitter;
     stop(waitForParticles?: boolean): void;
     update(dt: number): ParticleEmitter;
     spawn(): ParticleEmitter;
     recycle(): void;
     dispose(): void;
-    maxParticles: number;
-    core: BaseEmitterCore;
-    y: number;
     x: number;
+    y: number;
     rotation: number;
+    paused: boolean;
+    readonly on: IParticleEmitterSignals;
+    private recycleParticles;
+    private stopChildEmitters;
     __removeParticle(particle: Particle): void;
+    __removeChildEmitter(emitter: ParticleEmitter): void;
+    __subSpawn(particle: Particle, list: any): void;
     __applySettings(value: IEmitterSettings): void;
+    __setCore(type: any): void;
 }

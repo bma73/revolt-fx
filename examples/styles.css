@@ -1,0 +1,39 @@
+html, body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    background-color: black;
+    color:#aaaaaa;
+    margin: 5px;
+    padding: 0;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    font-weight: 100;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    user-select: none;
+}
+
+.logo {
+    height:45px;
+    margin-right: 10px;
+}
+
+.social {
+    margin-left: auto;
+}
+
+
+@media screen and (max-height:450px) {
+    .logo-container {
+       display: none;
+    }
+}
+
+
+
+canvas {
+    border-radius: 8px;
+
+}

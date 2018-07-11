@@ -1,7 +1,6 @@
-import { BaseEmitterCore } from "./BaseEmitterCore";
-import { ParticleEmitter } from "../ParticleEmitter";
 import { Particle } from "../Particle";
+import { BaseEmitterCore } from "./BaseEmitterCore";
 export declare class BoxEmitterCore extends BaseEmitterCore {
-    constructor(emitter: ParticleEmitter);
+    constructor();
     emit(particle: Particle): void;
 }

@@ -1,14 +1,12 @@
 /// <reference types="pixi.js" />
+import { IEffectSequenceSettings, IEmitterSettings, FX } from "./FX";
 import { Node } from "./util/LinkedList";
-import { IEffectSequenceSettings, IEmitterSettings } from "./RevoltEffects";
 export declare class BaseEffect extends Node {
     componentId: string;
     container: PIXI.Container;
     exhausted: boolean;
     completed: boolean;
-    onStart: Function;
-    onExhaust: Function;
-    onComplete: Function;
+    name: string;
     endTime: number;
     protected _x: number;
     protected _y: number;
@@ -17,6 +15,8 @@ export declare class BaseEffect extends Node {
     protected _scale: PIXI.Point;
     protected _time: number;
     protected _active: boolean;
+    __fx: FX;
+    __recycled: boolean;
     constructor(componentId: string);
     update(dt: number): void;
     recycle(): void;

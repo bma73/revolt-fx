@@ -1,18 +1,18 @@
 export class LinkedList {
 
-    private _length: number;
+    public __length: number;
     public first: Node;
     public last: Node;
 
     constructor() {
-        this._length = 0;
+        this.__length = 0;
     }
 
     // *********************************************************************************************
-    // * Public																					   *
+    // * Public																                                        					   *
     // *********************************************************************************************
     public get length(): number {
-        return this._length;
+        return this.__length;
     }
 
     public add(node: Node): LinkedList {
@@ -24,14 +24,18 @@ export class LinkedList {
             this.last = node;
         }
         node.list = this;
-        this._length++;
+        this.__length++;
         return this;
     }
 
     public remove(node: Node): LinkedList {
+        if (node.list == null) {
+            return;
+        }
+
         if (this.first === this.last) {
             this.first = this.last = null;
-        } else if (this._length > 0) {
+        } else if (this.__length > 0) {
             if (node === this.last) {
                 node.prev.next = null;
                 this.last = node.prev;
@@ -44,7 +48,7 @@ export class LinkedList {
             }
         }
         node.next = node.prev = node.list = null;
-        this._length--;
+        this.__length--;
         return this;
     }
 
@@ -59,13 +63,16 @@ export class LinkedList {
         this.first = this.last = null;
     }
 
-    // *********************************************************************************************
-    // * Private																				   *
-    // *********************************************************************************************
-
-    // *********************************************************************************************
-    // * Events																					   *
-    // *********************************************************************************************
+    public toArray(): Node[] {
+        const ret = [];
+        if (!this.first) return ret;
+        let node = this.first;
+        while (node) {
+            ret.push(node);
+            node = node.next;
+        }
+        return ret;
+    }
 
 }
 

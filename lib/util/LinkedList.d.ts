@@ -1,5 +1,5 @@
 export declare class LinkedList {
-    private _length;
+    __length: number;
     first: Node;
     last: Node;
     constructor();
@@ -7,9 +7,10 @@ export declare class LinkedList {
     add(node: Node): LinkedList;
     remove(node: Node): LinkedList;
     clear(): void;
+    toArray(): Node[];
 }
 export declare class Node {
-    data: any;
+    data?: any;
     next: Node;
     prev: Node;
     list: LinkedList;

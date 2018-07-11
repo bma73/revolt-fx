@@ -1,38 +1,43 @@
-import {RevoltEffects} from "./RevoltEffects";
-import * as PIXI from 'pixi.js';
+/// <reference types="pixi.js" />
+
+import {FX} from "./FX";
+
 
 export class Sprite extends PIXI.Sprite {
 
     public __sequenceEndTime: number;
+    public __fx: FX;
 
-    constructor(public componentId:string, texture: string, anchorX?: number, anchorY?: number) {
+    constructor(public componentId: string, texture: string, anchorX?: number, anchorY?: number) {
         super(PIXI.Texture.fromFrame(texture));
         this.anchor.set(anchorX || 0.5, anchorY || 0.5);
         this.__sequenceEndTime = null;
     }
 
     // *********************************************************************************************
-    // * Public																					   *
+    // * Public										                                        											   *
     // *********************************************************************************************
     public recycle() {
-        // console.log('recycle Sprite');
+        this.tint = 0xffffff;
+        this.alpha = 1;
+        (<PIXI.Transform>this.transform).rotation = 0;
+        (<PIXI.Transform>this.transform).scale.set(1);
         if (this.parent) this.parent.removeChild(this);
-        RevoltEffects.instance.__recycleObject(this.componentId, this);
-        // this.x = this.y = 0;
-        // console.log(this, 'recycle');
+        this.__fx.__recycleSprite(this.componentId, this);
     }
 
     public dispose() {
+        this.__fx = null;
         this.recycle();
         this.destroy(false);
     }
 
     // *********************************************************************************************
-    // * Private																				   *
+    // * Private																		                                        		   *
     // *********************************************************************************************
 
     // *********************************************************************************************
-    // * Events																					   *
+    // * Events			                                        																		   *
     // *********************************************************************************************
 
 }

@@ -1,11 +1,14 @@
-import {RevoltEffects} from "./RevoltEffects";
+/// <reference types="pixi.js" />
+
+import {FX} from "./FX";
 
 export class MovieClip extends PIXI.extras.AnimatedSprite {
 
-    public __sequenceEndTime:number;
-    public componentId:string;
+    public componentId: string;
+    public __sequenceEndTime: number;
+    public __fx: FX;
 
-    constructor(componentId:string, textures: string[], anchorX?: number, anchorY?: number) {
+    constructor(componentId: string, textures: string[], anchorX?: number, anchorY?: number) {
         let t = [];
         let l = textures.length;
         for (let i = 0; i < l; i++) {
@@ -16,28 +19,34 @@ export class MovieClip extends PIXI.extras.AnimatedSprite {
         this.anchor.set(0.5, 0.5);
         this.loop = false;
         this.__sequenceEndTime = 0;
-        // this.play();
     }
 
     // *********************************************************************************************
-    // * Public																					   *
+    // * Public																		                                        			   *
     // *********************************************************************************************
     public recycle() {
-        // console.log('recycle MovieClip');
+        this.alpha = 1;
+        this.tint = 0xffffff;
+        (<PIXI.Transform> this.transform).rotation = 0;
+        (<PIXI.Transform> this.transform).scale.set(1);
         if (this.parent) this.parent.removeChild(this);
         this.gotoAndStop(0);
-        RevoltEffects.instance.__recycleObject(this.componentId, this);
+        this.__fx.__recycleMovieClip(this.componentId, this);
     }
+
     public dispose() {
-        this.recycle();
+        if (this.parent) this.parent.removeChild(this);
+        this.__fx = null;
+        this.gotoAndStop(0);
         this.destroy();
     }
+
     // *********************************************************************************************
-    // * Private																				   *
+    // * Private																				                                           *
     // *********************************************************************************************
 
     // *********************************************************************************************
-    // * Events																					   *
+    // * Events																		                                        			   *
     // *********************************************************************************************
 
 }
