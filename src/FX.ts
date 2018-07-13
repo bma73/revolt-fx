@@ -77,10 +77,13 @@ export class FX {
         this._active = false;
     }
 
-    public update() {
+    public update(delta?: number) {
         if (!this.active) return;
+
         const t = Date.now();
-        const dt = (t - this._timeElapsed) * 0.001;
+        let dt = (t - this._timeElapsed) * 0.001;
+
+        if (delta !== undefined) dt *= delta;
 
         const list = this._effects;
         let node = <BaseEffect>list.first;

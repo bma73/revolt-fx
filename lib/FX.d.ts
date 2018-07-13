@@ -25,6 +25,7 @@ export declare class FX {
     effectSequenceCount: number;
     maxParticles: number;
     particleFac: number;
+    fix: any;
     private _active;
     private _timeElapsed;
     private _cache;
@@ -40,7 +41,7 @@ export declare class FX {
     constructor();
     start(): void;
     pause(): void;
-    update(): void;
+    update(delta?: number): void;
     clearCache(): void;
     setFloorY(value: number): void;
     dispose(): void;

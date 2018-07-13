@@ -281,12 +281,12 @@ sequence.on.triggerActivated.add(triggerValue => {
 ```
 
 #### Update
-Call the update method every frame
+Call the update method every frame with the ticker's delta value (optional)
 
 ```js
-app.ticker.add(function () {
-    //Update the RevoltFX instance
-    fx.update();
+app.ticker.add(function (delta) {
+    //Update the RevoltFX instance 
+    fx.update(delta);
 });
 ```
 

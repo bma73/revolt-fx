@@ -139,14 +139,12 @@ var example = {
         loading.y = example.height * 0.5;
         container.addChild(loading);
 
-
         //Create RevoltFX instance
         var fx = this.fx = new revolt.FX();
 
-
         //Update
         app.ticker.add(function (delta) {
-            fx.update();
+            fx.update(delta);
             stats.text = 'Emitters ' + fx.emitterCount + ' / Particles ' + fx.particleCount + ' / ' + Math.round(app.ticker.FPS) + ' FPS';
         });
 

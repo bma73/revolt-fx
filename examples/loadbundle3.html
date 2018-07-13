@@ -36,9 +36,9 @@
         var emitter = fx.getParticleEmitter('plasma-corona');
         emitter.init(content, true, 1.9);
 
-        app.ticker.add(function () {
+        app.ticker.add(function (delta) {
             //Update the RevoltFX instance
-            fx.update();
+            fx.update(delta);
         });
 
     }).catch(function (err) {
