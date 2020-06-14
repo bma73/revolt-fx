@@ -1,3 +1,5 @@
+/// <reference types="pixi.js" />
+
 import {IEffectSequenceSettings, IEmitterSettings, FX, IParticleEmitterParent} from "./FX";
 import {Node} from "./util/LinkedList";
 

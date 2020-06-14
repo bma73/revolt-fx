@@ -1,24 +1,24 @@
 {
   "name": "revolt-fx",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Particle and Effect System for Pixi.js",
   "main": "./lib/index.js",
   "scripts": {},
   "author": "Björn Acker <bjoern@electronauts.net>",
   "license": "MIT",
   "devDependencies": {
-    "@types/jszip": "^3.1.4",
-    "@types/pixi.js": "^4.8.0",
-    "grunt": "^1.0.3",
+    "@types/jszip": "^3.4.1",
+    "@types/node": "^14.0.13",
+    "grunt": "^1.1.0",
     "grunt-browserify": "^5.3.0",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-uglify": "^3.3.0",
-    "grunt-ts": "^6.0.0-beta.19",
-    "typescript": "^2.9.2"
+    "grunt-contrib-uglify": "^3.4.0",
+    "grunt-ts": "^6.0.0-beta.22",
+    "typescript": "^3.9.5"
   },
   "dependencies": {
-    "pixi.js": "^4.8.1"
+    "pixi.js": "5.2.4"
   }
 }

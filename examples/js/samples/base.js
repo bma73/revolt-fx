@@ -75,7 +75,7 @@ var example = {
         }
     },
     boot: function () {
-
+        console.log('RevoltFX', revolt.FX.version);
         //Setup app
         var app = this.app = new PIXI.Application(example.width, example.height,
             {
@@ -150,7 +150,7 @@ var example = {
 
         var that = this;
         //Load the bundle data and the example spritesheet
-        PIXI.loader
+        PIXI.Loader.shared
             .add('fx_settings', 'assets/default-bundle.json?' + Date.now())
             .add('fx_spritesheet', 'assets/revoltfx-spritesheet.json?' + Date.now())
             .add('example_spritesheet', 'assets/rfx-examples.json?' + Date.now())
@@ -159,7 +159,7 @@ var example = {
                 containers.back.visible = true;
                 container.removeChild(loading);
 
-                var back = PIXI.Sprite.fromFrame('gradient1');
+                var back = PIXI.Sprite.from('gradient1');
                 back.width = example.width;
                 back.height = example.height;
                 example.containers.gradient.addChild(back);

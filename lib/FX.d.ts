@@ -18,6 +18,7 @@ declare enum EffectSequenceComponentType {
 }
 export declare class FX {
     static settingsVersion: number;
+    static readonly version: string;
     private static _bundleHash;
     useBlendModes: boolean;
     particleCount: number;
@@ -67,7 +68,7 @@ export declare class FX {
     stopAllEffects(): void;
     parseSpriteSheet(spriteSheet: PIXI.Spritesheet, filter?: string): IParseSpriteSheetResult;
     parseTextureCache(filter?: string): IParseSpriteSheetResult;
-    readonly active: boolean;
+    get active(): boolean;
     __addActiveEffect(effect: BaseEffect): void;
     __removeActiveEffect(effect: BaseEffect): void;
     __getSprite(componentId: string): Sprite;
@@ -246,7 +247,7 @@ export interface IBaseComponentParams {
     anchorY: number;
 }
 export interface IParticleEmitterParent {
-    __removeChildEmitter(emitter: ParticleEmitter): any;
+    __removeChildEmitter(emitter: any): any;
 }
 export interface IParticle extends IParticleEmitterParent {
     componentId: string;

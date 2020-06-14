@@ -27,10 +27,13 @@ export declare class EffectSequence extends BaseEffect {
     stop(): void;
     recycle(): void;
     dispose(): void;
-    rotation: number;
-    x: number;
-    y: number;
-    readonly on: IEffectSequenceSignals;
+    set rotation(value: number);
+    get x(): number;
+    set x(value: number);
+    get y(): number;
+    set y(value: number);
+    get rotation(): number;
+    get on(): IEffectSequenceSignals;
     private setNextEffect;
     __applySettings(value: IEffectSequenceSettings): void;
 }

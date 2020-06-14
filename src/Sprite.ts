@@ -9,7 +9,7 @@ export class Sprite extends PIXI.Sprite {
     public __fx: FX;
 
     constructor(public componentId: string, texture: string, anchorX?: number, anchorY?: number) {
-        super(PIXI.Texture.fromFrame(texture));
+        super(PIXI.Texture.from(texture));
         this.anchor.set(anchorX || 0.5, anchorY || 0.5);
         this.__sequenceEndTime = null;
     }
@@ -29,6 +29,7 @@ export class Sprite extends PIXI.Sprite {
     public dispose() {
         this.__fx = null;
         this.recycle();
+        // @ts-ignore
         this.destroy(false);
     }
 

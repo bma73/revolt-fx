@@ -461,7 +461,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
         particle.recycle();
     }
 
-    public __removeChildEmitter(emitter: ParticleEmitter) {
+    public __removeChildEmitter(emitter: any) {
         const index = this._childEmitters.indexOf(emitter);
         if (index > -1) {
             this._childEmitters.splice(index, 1);

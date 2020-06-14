@@ -1,6 +1,6 @@
 /// <reference types="pixi.js" />
 import { FX } from "./FX";
-export declare class MovieClip extends PIXI.extras.AnimatedSprite {
+export declare class MovieClip extends PIXI.AnimatedSprite {
     componentId: string;
     __sequenceEndTime: number;
     __fx: FX;

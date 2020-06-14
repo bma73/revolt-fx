@@ -84,8 +84,8 @@ export declare class Particle extends Node implements IParticle, IParticleEmitte
     stop(): void;
     recycle(): void;
     dispose(): void;
-    readonly x: number;
-    readonly y: number;
-    readonly on: IParticleSignals;
+    get x(): number;
+    get y(): number;
+    get on(): IParticleSignals;
     __removeChildEmitter(emitter: ParticleEmitter): void;
 }

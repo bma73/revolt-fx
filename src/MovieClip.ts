@@ -2,7 +2,7 @@
 
 import {FX} from "./FX";
 
-export class MovieClip extends PIXI.extras.AnimatedSprite {
+export class MovieClip extends PIXI.AnimatedSprite {
 
     public componentId: string;
     public __sequenceEndTime: number;
@@ -12,7 +12,7 @@ export class MovieClip extends PIXI.extras.AnimatedSprite {
         let t = [];
         let l = textures.length;
         for (let i = 0; i < l; i++) {
-            t.push(PIXI.Texture.fromFrame(textures[i]));
+            t.push(PIXI.Texture.from(textures[i]));
         }
         super(t);
         this.componentId = componentId;

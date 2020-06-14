@@ -1,9 +1,12 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.revolt = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -11,6 +14,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BaseEffect = void 0;
 var LinkedList_1 = require("./util/LinkedList");
 var BaseEffect = (function (_super) {
     __extends(BaseEffect, _super);
@@ -36,7 +40,7 @@ var BaseEffect = (function (_super) {
         get: function () {
             return this._active;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseEffect.prototype, "scale", {
@@ -46,7 +50,7 @@ var BaseEffect = (function (_super) {
         set: function (value) {
             this._scale = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseEffect.prototype, "alpha", {
@@ -56,7 +60,7 @@ var BaseEffect = (function (_super) {
         set: function (value) {
             this._alpha = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseEffect.prototype, "rotation", {
@@ -66,7 +70,7 @@ var BaseEffect = (function (_super) {
         set: function (value) {
             this._rotation = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseEffect.prototype, "y", {
@@ -76,7 +80,7 @@ var BaseEffect = (function (_super) {
         set: function (value) {
             this._y = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseEffect.prototype, "x", {
@@ -86,7 +90,7 @@ var BaseEffect = (function (_super) {
         set: function (value) {
             this._x = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     BaseEffect.prototype.__applySettings = function (value) {
@@ -98,9 +102,12 @@ exports.BaseEffect = BaseEffect;
 },{"./util/LinkedList":17}],2:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -108,6 +115,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.EffectSequence = void 0;
 var FX_1 = require("./FX");
 var BaseEffect_1 = require("./BaseEffect");
 var LinkedList_1 = require("./util/LinkedList");
@@ -327,7 +335,7 @@ var EffectSequence = (function (_super) {
                 node = next;
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(EffectSequence.prototype, "x", {
@@ -345,7 +353,7 @@ var EffectSequence = (function (_super) {
                 node = next;
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(EffectSequence.prototype, "y", {
@@ -363,14 +371,14 @@ var EffectSequence = (function (_super) {
                 node = next;
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(EffectSequence.prototype, "on", {
         get: function () {
             return this.__on;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     EffectSequence.prototype.setNextEffect = function () {
@@ -392,10 +400,11 @@ exports.EffectSequence = EffectSequence;
 },{"./BaseEffect":1,"./FX":3,"./ParticleEmitter":6,"./util/FXSignal":16,"./util/LinkedList":17,"./util/Rnd":18}],3:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -427,6 +436,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FX = void 0;
 var ParticleEmitter_1 = require("./ParticleEmitter");
 var LinkedList_1 = require("./util/LinkedList");
 var RingEmitterCore_1 = require("./core/RingEmitterCore");
@@ -527,7 +537,7 @@ var FX = (function () {
         var _this = this;
         if (spritesheetFilter === void 0) { spritesheetFilter = ''; }
         return new Promise(function (resolve, reject) {
-            var loader = new PIXI.loaders.Loader();
+            var loader = new PIXI.Loader();
             loader.onError.add(function (err) {
                 reject(err);
             });
@@ -557,8 +567,8 @@ var FX = (function () {
                 reject('JSZip instance not provided.');
                 return;
             }
-            var loader = new PIXI.loaders.Loader();
-            loader.add('zip', zipUrl, { xhrType: PIXI.loaders.Resource.XHR_RESPONSE_TYPE.BLOB });
+            var loader = new PIXI.Loader();
+            loader.add('zip', zipUrl, { xhrType: PIXI.LoaderResource.XHR_RESPONSE_TYPE.BLOB });
             if (additionalAssets) {
                 for (var _i = 0, additionalAssets_2 = additionalAssets; _i < additionalAssets_2.length; _i++) {
                     var arg = additionalAssets_2[_i];
@@ -779,7 +789,7 @@ var FX = (function () {
         get: function () {
             return this._active;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     FX.prototype.__addActiveEffect = function (effect) {
@@ -887,6 +897,7 @@ var FX = (function () {
         return result;
     };
     FX.settingsVersion = 0;
+    FX.version = '1.1.0';
     FX._bundleHash = '80c6df7fb0d3d898f34ce0031c037fef';
     FX.ComponentType = ComponentType;
     FX.EffectSequenceComponentType = EffectSequenceComponentType;
@@ -902,9 +913,12 @@ exports.FX = FX;
 },{"./EffectSequence":2,"./MovieClip":4,"./Particle":5,"./ParticleEmitter":6,"./Sanitizer":7,"./Sprite":8,"./core/BoxEmitterCore":10,"./core/CircleEmitterCore":11,"./core/RingEmitterCore":12,"./util/LinkedList":17}],4:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -912,6 +926,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MovieClip = void 0;
 var MovieClip = (function (_super) {
     __extends(MovieClip, _super);
     function MovieClip(componentId, textures, anchorX, anchorY) {
@@ -919,7 +934,7 @@ var MovieClip = (function (_super) {
         var t = [];
         var l = textures.length;
         for (var i = 0; i < l; i++) {
-            t.push(PIXI.Texture.fromFrame(textures[i]));
+            t.push(PIXI.Texture.from(textures[i]));
         }
         _this = _super.call(this, t) || this;
         _this.componentId = componentId;
@@ -946,15 +961,18 @@ var MovieClip = (function (_super) {
         this.destroy();
     };
     return MovieClip;
-}(PIXI.extras.AnimatedSprite));
+}(PIXI.AnimatedSprite));
 exports.MovieClip = MovieClip;
 
 },{}],5:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -962,6 +980,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Particle = void 0;
 var LinkedList_1 = require("./util/LinkedList");
 var Color_1 = require("./util/Color");
 var Easing_1 = require("./util/Easing");
@@ -1315,21 +1334,21 @@ var Particle = (function (_super) {
         get: function () {
             return this.component.x;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Particle.prototype, "y", {
         get: function () {
             return this.component.y;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Particle.prototype, "on", {
         get: function () {
             return this.__on;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Particle.prototype.__removeChildEmitter = function (emitter) {
@@ -1347,9 +1366,12 @@ exports.Particle = Particle;
 },{"./util/Color":14,"./util/Easing":15,"./util/FXSignal":16,"./util/LinkedList":17,"./util/Rnd":18}],6:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -1357,6 +1379,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ParticleEmitter = void 0;
 var BaseEffect_1 = require("./BaseEffect");
 var LinkedList_1 = require("./util/LinkedList");
 var Rnd_1 = require("./util/Rnd");
@@ -1656,7 +1679,7 @@ var ParticleEmitter = (function (_super) {
                 }
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticleEmitter.prototype, "y", {
@@ -1677,7 +1700,7 @@ var ParticleEmitter = (function (_super) {
                 }
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticleEmitter.prototype, "rotation", {
@@ -1697,7 +1720,7 @@ var ParticleEmitter = (function (_super) {
                 }
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticleEmitter.prototype, "paused", {
@@ -1714,14 +1737,14 @@ var ParticleEmitter = (function (_super) {
                 }
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticleEmitter.prototype, "on", {
         get: function () {
             return this.__on;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ParticleEmitter.prototype.recycleParticles = function () {
@@ -1818,6 +1841,7 @@ exports.ParticleEmitter = ParticleEmitter;
 },{"./BaseEffect":1,"./util/FXSignal":16,"./util/LinkedList":17,"./util/Rnd":18}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Sanitizer = void 0;
 var Sanitizer = (function () {
     function Sanitizer() {
     }
@@ -2012,9 +2036,12 @@ exports.Sanitizer = Sanitizer;
 },{}],8:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -2022,10 +2049,11 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Sprite = void 0;
 var Sprite = (function (_super) {
     __extends(Sprite, _super);
     function Sprite(componentId, texture, anchorX, anchorY) {
-        var _this = _super.call(this, PIXI.Texture.fromFrame(texture)) || this;
+        var _this = _super.call(this, PIXI.Texture.from(texture)) || this;
         _this.componentId = componentId;
         _this.anchor.set(anchorX || 0.5, anchorY || 0.5);
         _this.__sequenceEndTime = null;
@@ -2052,6 +2080,7 @@ exports.Sprite = Sprite;
 },{}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BaseEmitterCore = void 0;
 var BaseEmitterCore = (function () {
     function BaseEmitterCore(type) {
         this.type = type;
@@ -2094,7 +2123,7 @@ var BaseEmitterCore = (function () {
             this._dx = Math.cos(value);
             this._dy = Math.sin(value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     BaseEmitterCore.__TYPE_BOX = 'box';
@@ -2107,9 +2136,12 @@ exports.BaseEmitterCore = BaseEmitterCore;
 },{}],10:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -2117,6 +2149,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BoxEmitterCore = void 0;
 var BaseEmitterCore_1 = require("./BaseEmitterCore");
 var Rnd_1 = require("../util/Rnd");
 var BoxEmitterCore = (function (_super) {
@@ -2159,9 +2192,12 @@ exports.BoxEmitterCore = BoxEmitterCore;
 },{"../util/Rnd":18,"./BaseEmitterCore":9}],11:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -2169,6 +2205,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CircleEmitterCore = void 0;
 var BaseEmitterCore_1 = require("./BaseEmitterCore");
 var Rnd_1 = require("../util/Rnd");
 var CircleEmitterCore = (function (_super) {
@@ -2214,9 +2251,12 @@ exports.CircleEmitterCore = CircleEmitterCore;
 },{"../util/Rnd":18,"./BaseEmitterCore":9}],12:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -2224,6 +2264,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RingEmitterCore = void 0;
 var BaseEmitterCore_1 = require("./BaseEmitterCore");
 var Rnd_1 = require("../util/Rnd");
 var RingEmitterCore = (function (_super) {
@@ -2277,41 +2318,42 @@ exports.RingEmitterCore = RingEmitterCore;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var FX_1 = require("./FX");
-exports.FX = FX_1.FX;
+Object.defineProperty(exports, "FX", { enumerable: true, get: function () { return FX_1.FX; } });
 var BaseEffect_1 = require("./BaseEffect");
-exports.BaseEffect = BaseEffect_1.BaseEffect;
+Object.defineProperty(exports, "BaseEffect", { enumerable: true, get: function () { return BaseEffect_1.BaseEffect; } });
 var EffectSequence_1 = require("./EffectSequence");
-exports.EffectSequence = EffectSequence_1.EffectSequence;
+Object.defineProperty(exports, "EffectSequence", { enumerable: true, get: function () { return EffectSequence_1.EffectSequence; } });
 var MovieClip_1 = require("./MovieClip");
-exports.MovieClip = MovieClip_1.MovieClip;
+Object.defineProperty(exports, "MovieClip", { enumerable: true, get: function () { return MovieClip_1.MovieClip; } });
 var Particle_1 = require("./Particle");
-exports.Particle = Particle_1.Particle;
+Object.defineProperty(exports, "Particle", { enumerable: true, get: function () { return Particle_1.Particle; } });
 var ParticleEmitter_1 = require("./ParticleEmitter");
-exports.ParticleEmitter = ParticleEmitter_1.ParticleEmitter;
+Object.defineProperty(exports, "ParticleEmitter", { enumerable: true, get: function () { return ParticleEmitter_1.ParticleEmitter; } });
 var Sprite_1 = require("./Sprite");
-exports.Sprite = Sprite_1.Sprite;
+Object.defineProperty(exports, "Sprite", { enumerable: true, get: function () { return Sprite_1.Sprite; } });
 var BaseEmitterCore_1 = require("./core/BaseEmitterCore");
-exports.BaseEmitterCore = BaseEmitterCore_1.BaseEmitterCore;
+Object.defineProperty(exports, "BaseEmitterCore", { enumerable: true, get: function () { return BaseEmitterCore_1.BaseEmitterCore; } });
 var BoxEmitterCore_1 = require("./core/BoxEmitterCore");
-exports.BoxEmitterCore = BoxEmitterCore_1.BoxEmitterCore;
+Object.defineProperty(exports, "BoxEmitterCore", { enumerable: true, get: function () { return BoxEmitterCore_1.BoxEmitterCore; } });
 var CircleEmitterCore_1 = require("./core/CircleEmitterCore");
-exports.CircleEmitterCore = CircleEmitterCore_1.CircleEmitterCore;
+Object.defineProperty(exports, "CircleEmitterCore", { enumerable: true, get: function () { return CircleEmitterCore_1.CircleEmitterCore; } });
 var RingEmitterCore_1 = require("./core/RingEmitterCore");
-exports.RingEmitterCore = RingEmitterCore_1.RingEmitterCore;
+Object.defineProperty(exports, "RingEmitterCore", { enumerable: true, get: function () { return RingEmitterCore_1.RingEmitterCore; } });
 var Color_1 = require("./util/Color");
-exports.Color = Color_1.Color;
+Object.defineProperty(exports, "Color", { enumerable: true, get: function () { return Color_1.Color; } });
 var Easing_1 = require("./util/Easing");
-exports.Easing = Easing_1.Easing;
+Object.defineProperty(exports, "Easing", { enumerable: true, get: function () { return Easing_1.Easing; } });
 var LinkedList_1 = require("./util/LinkedList");
-exports.LinkedList = LinkedList_1.LinkedList;
+Object.defineProperty(exports, "LinkedList", { enumerable: true, get: function () { return LinkedList_1.LinkedList; } });
 var Rnd_1 = require("./util/Rnd");
-exports.Rnd = Rnd_1.Rnd;
+Object.defineProperty(exports, "Rnd", { enumerable: true, get: function () { return Rnd_1.Rnd; } });
 var FXSignal_1 = require("./util/FXSignal");
-exports.FXSignal = FXSignal_1.FXSignal;
+Object.defineProperty(exports, "FXSignal", { enumerable: true, get: function () { return FXSignal_1.FXSignal; } });
 
 },{"./BaseEffect":1,"./EffectSequence":2,"./FX":3,"./MovieClip":4,"./Particle":5,"./ParticleEmitter":6,"./Sprite":8,"./core/BaseEmitterCore":9,"./core/BoxEmitterCore":10,"./core/CircleEmitterCore":11,"./core/RingEmitterCore":12,"./util/Color":14,"./util/Easing":15,"./util/FXSignal":16,"./util/LinkedList":17,"./util/Rnd":18}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Color = void 0;
 var Color = (function () {
     function Color() {
     }
@@ -2347,6 +2389,7 @@ exports.Color = Color;
 },{}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Easing = void 0;
 var Easing = (function () {
     function Easing() {
     }
@@ -2596,6 +2639,7 @@ exports.Easing = Easing;
 },{}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FXSignalListener = exports.FXSignal = void 0;
 var LinkedList_1 = require("./LinkedList");
 var FXSignal = (function () {
     function FXSignal() {
@@ -2673,6 +2717,7 @@ exports.FXSignalListener = FXSignalListener;
 },{"./LinkedList":17}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Node = exports.LinkedList = void 0;
 var LinkedList = (function () {
     function LinkedList() {
         this.__length = 0;
@@ -2681,7 +2726,7 @@ var LinkedList = (function () {
         get: function () {
             return this.__length;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     LinkedList.prototype.add = function (node) {
@@ -2762,6 +2807,7 @@ exports.Node = Node;
 },{}],18:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Rnd = void 0;
 var Rnd = (function () {
     function Rnd() {
     }

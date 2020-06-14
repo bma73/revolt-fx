@@ -25,5 +25,6 @@ export declare class BaseEmitterCore {
     step(): void;
     recycle(): void;
     dispose(): void;
-    rotation: number;
+    get rotation(): number;
+    set rotation(value: number);
 }
