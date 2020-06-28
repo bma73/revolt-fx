@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-    
+
     grunt.initConfig({
 
         clean: {
@@ -37,19 +37,29 @@ module.exports = function (grunt) {
                 }
             }
         },
+        replace: {
+            dist: {
+                src: ['dist/revoltfx.js'],
+                overwrite: true,
+                replacements: [{
+                    from: 'var PIXI = require("pixi.js");',
+                    to: ''
+                }]
+            }
+        },
         copy: {
             dist: {
                 src: 'dist/revoltfx.min.js',
                 dest:'examples/js/revoltfx.min.js'
             }
         }
-
     });
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-text-replace');
 
-    grunt.registerTask('dist', ['clean:dist', 'ts:dist', 'browserify:dist', 'uglify:dist', 'copy:dist']);
+    grunt.registerTask('dist', ['clean:dist', 'ts:dist', 'browserify:dist', 'replace:dist', 'uglify:dist', 'copy:dist']);
 };

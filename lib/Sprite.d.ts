@@ -1,5 +1,5 @@
-/// <reference types="pixi.js" />
 import { FX } from "./FX";
+import * as PIXI from 'pixi.js';
 export declare class Sprite extends PIXI.Sprite {
     componentId: string;
     __sequenceEndTime: number;

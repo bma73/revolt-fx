@@ -927,6 +927,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MovieClip = void 0;
+
 var MovieClip = (function (_super) {
     __extends(MovieClip, _super);
     function MovieClip(componentId, textures, anchorX, anchorY) {
@@ -964,7 +965,7 @@ var MovieClip = (function (_super) {
 }(PIXI.AnimatedSprite));
 exports.MovieClip = MovieClip;
 
-},{}],5:[function(require,module,exports){
+},{"pixi.js":undefined}],5:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -2050,6 +2051,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Sprite = void 0;
+
 var Sprite = (function (_super) {
     __extends(Sprite, _super);
     function Sprite(componentId, texture, anchorX, anchorY) {
@@ -2077,7 +2079,7 @@ var Sprite = (function (_super) {
 }(PIXI.Sprite));
 exports.Sprite = Sprite;
 
-},{}],9:[function(require,module,exports){
+},{"pixi.js":undefined}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseEmitterCore = void 0;

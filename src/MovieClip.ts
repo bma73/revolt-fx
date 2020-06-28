@@ -1,6 +1,7 @@
 /// <reference types="pixi.js" />
 
 import {FX} from "./FX";
+import * as PIXI from 'pixi.js';
 
 export class MovieClip extends PIXI.AnimatedSprite {
 
