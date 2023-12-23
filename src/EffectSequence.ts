@@ -1,13 +1,15 @@
 /// <reference types="pixi.js" />
 
-import {FX, IEffectSequenceSettings, IEffectSettings, IMovieClipComponentParams} from "./FX";
-import {BaseEffect} from "./BaseEffect";
-import {LinkedList, Node} from "./util/LinkedList";
-import {Sprite} from "./Sprite";
-import {MovieClip} from "./MovieClip";
-import {ParticleEmitter} from "./ParticleEmitter";
-import {Rnd} from "./util/Rnd";
-import {FXSignal} from "./util/FXSignal";
+import * as PIXI from "pixi.js";
+import { IEffectSequenceSettings, IEffectSettings, IMovieClipComponentParams } from "./FX";
+import { BaseEffect } from "./BaseEffect";
+import { LinkedList, Node } from "./util/LinkedList";
+import { Sprite } from "./Sprite";
+import { MovieClip } from "./MovieClip";
+import { ParticleEmitter } from "./ParticleEmitter";
+import { Rnd } from "./util/Rnd";
+import { FXSignal } from "./util/FXSignal";
+import { EffectSequenceComponentType } from "./EffectSequenceComponentType";
 
 export interface IEffectSequenceSignals {
     started: FXSignal;
@@ -19,16 +21,16 @@ export interface IEffectSequenceSignals {
 
 export class EffectSequence extends BaseEffect {
 
-    public settings: IEffectSequenceSettings;
+    public settings!: IEffectSequenceSettings;
 
-    private _startTime: number;
+    private _startTime!: number;
 
-    private _effectStartTime: number;
-    private _nextEffectSettings: IEffectSettings;
+    private _effectStartTime!: number;
+    private _nextEffectSettings!: IEffectSettings;
 
-    private _list: IEffectSettings[];
+    private _list: IEffectSettings[] = [];
     private _index: number;
-    private _scaleMod: number;
+    private _scaleMod!: number;
     private _delay: number;
 
     private _elements: LinkedList = new LinkedList();
@@ -56,7 +58,7 @@ export class EffectSequence extends BaseEffect {
         return this;
     }
 
-    public start(): EffectSequence {
+    public start(): EffectSequence | undefined {
         if (this._active) return;
 
         this._startTime = Date.now() + (this.settings.delay ? this.settings.delay * 1000 : 0) + this._delay;
@@ -99,7 +101,7 @@ export class EffectSequence extends BaseEffect {
             let node;
 
             switch (def.componentType) {
-                case FX.EffectSequenceComponentType.Sprite:
+                case EffectSequenceComponentType.Sprite:
                     effect = fx.__getSprite(def.componentId);
                     let container = fx.__containers[def.containerId] || this.container;
                     container.addChild(<Sprite>effect);
@@ -109,21 +111,21 @@ export class EffectSequence extends BaseEffect {
                     (<Sprite>effect).alpha = Rnd.float(def.alphaMin, def.alphaMax);
                     (<Sprite>effect).anchor.set(def.componentParams.anchorX, def.componentParams.anchorY);
 
-                    node = new Node({component: effect, endTime: t + (def.duration) * 1000});
+                    node = new Node({ component: effect, endTime: t + (def.duration) * 1000 });
                     this._elements.add(node);
                     effect.x = this._x;
                     effect.y = this._y;
                     effect.rotation = this._rotation + Rnd.float(def.rotationMin, def.rotationMax);
                     if (this.__on.effectSpawned.__hasCallback) {
-                        this.__on.effectSpawned.dispatch(FX.EffectSequenceComponentType.Sprite, effect);
+                        this.__on.effectSpawned.dispatch(EffectSequenceComponentType.Sprite, effect);
                     }
                     break;
 
-                case FX.EffectSequenceComponentType.MovieClip:
+                case EffectSequenceComponentType.MovieClip:
                     effect = fx.__getMovieClip(def.componentId);
-                    if ((<IMovieClipComponentParams> def.componentParams).loop) {
-                        (<MovieClip>effect).animationSpeed = Rnd.float((<IMovieClipComponentParams> def.componentParams).animationSpeedMin || 1, (<IMovieClipComponentParams> def.componentParams).animationSpeedMax || 1);
-                        (<MovieClip>effect).loop = (<IMovieClipComponentParams> def.componentParams).loop || false;
+                    if ((<IMovieClipComponentParams>def.componentParams).loop) {
+                        (<MovieClip>effect).animationSpeed = Rnd.float((<IMovieClipComponentParams>def.componentParams).animationSpeedMin || 1, (<IMovieClipComponentParams>def.componentParams).animationSpeedMax || 1);
+                        (<MovieClip>effect).loop = (<IMovieClipComponentParams>def.componentParams).loop || false;
                     } else {
                         const speed = def.duration
                     }
@@ -140,31 +142,31 @@ export class EffectSequence extends BaseEffect {
                     (<MovieClip>effect).alpha = Rnd.float(def.alphaMin, def.alphaMax);
 
 
-                    node = new Node({component: effect, endTime: t + (def.duration) * 1000});
+                    node = new Node({ component: effect, endTime: t + (def.duration) * 1000 });
                     this._elements.add(node);
                     effect.x = this._x;
                     effect.y = this._y;
                     effect.rotation = this._rotation + Rnd.float(def.rotationMin, def.rotationMax);
                     if (this.__on.effectSpawned.__hasCallback) {
-                        this.__on.effectSpawned.dispatch(FX.EffectSequenceComponentType.MovieClip, effect);
+                        this.__on.effectSpawned.dispatch(EffectSequenceComponentType.MovieClip, effect);
                     }
                     break;
 
-                case FX.EffectSequenceComponentType.Emitter:
+                case EffectSequenceComponentType.Emitter:
                     effect = fx.getParticleEmitterById(def.componentId);
                     container = fx.__containers[def.containerId] || this.container;
                     (<ParticleEmitter>effect).init(container, true, Rnd.float(def.scaleMin, def.scaleMax) * Rnd.float(this.settings.scaleMin, this.settings.scaleMax) * this._scaleMod);
-                    node = new Node({component: effect, endTime: (<ParticleEmitter>effect).endTime});
+                    node = new Node({ component: effect, endTime: (<ParticleEmitter>effect).endTime });
                     this._elements.add(node);
                     effect.x = this._x;
                     effect.y = this._y;
                     effect.rotation = this._rotation + effect.settings.rotation;
                     if (this.__on.effectSpawned.__hasCallback) {
-                        this.__on.effectSpawned.dispatch(FX.EffectSequenceComponentType.Emitter, effect);
+                        this.__on.effectSpawned.dispatch(EffectSequenceComponentType.Emitter, effect);
                     }
                     break;
 
-                case FX.EffectSequenceComponentType.Trigger:
+                case EffectSequenceComponentType.Trigger:
                     if (this.__on.triggerActivated.__hasCallback) {
                         this.__on.triggerActivated.dispatch(def.triggerValue);
                     }
@@ -239,9 +241,9 @@ export class EffectSequence extends BaseEffect {
 
     public dispose() {
         this._elements.clear();
-        this.__fx = null;
+        this.__fx = undefined;
         const on = this.__on;
-        on.completed = on.started = on.exhausted = on.effectSpawned = on.triggerActivated = null;
+        on.completed = on.started = on.exhausted = on.effectSpawned = on.triggerActivated = undefined;
     }
 
     public set rotation(value: number) {
@@ -298,7 +300,7 @@ export class EffectSequence extends BaseEffect {
     }
 
     // *********************************************************************************************
-    // * Private																		           *                              		   *
+    // * Private																		           *                              		   
     // *********************************************************************************************
 
     private setNextEffect() {
@@ -308,7 +310,7 @@ export class EffectSequence extends BaseEffect {
     }
 
     // *********************************************************************************************
-    // * Internal																		           *                              		   *
+    // * Internal																		           *                              		   
     // *********************************************************************************************
     public __applySettings(value: IEffectSequenceSettings) {
         this.settings = value;

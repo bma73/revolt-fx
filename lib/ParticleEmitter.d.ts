@@ -1,4 +1,4 @@
-/// <reference types="pixi.js" />
+import * as PIXI from "pixi.js";
 import { BaseEffect } from "./BaseEffect";
 import { IEmitterSettings, IParticleEmitterParent } from "./FX";
 import { BaseEmitterCore } from "./core/BaseEmitterCore";
@@ -56,5 +56,5 @@ export declare class ParticleEmitter extends BaseEffect implements IParticleEmit
     __removeChildEmitter(emitter: any): void;
     __subSpawn(particle: Particle, list: any): void;
     __applySettings(value: IEmitterSettings): void;
-    __setCore(type: any): void;
+    __setCore(type: string): void;
 }

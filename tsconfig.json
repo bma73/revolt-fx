@@ -1,14 +1,26 @@
 {
   "compilerOptions": {
     "sourceMap": true,
-    "module": "commonjs",
-    "target": "es5",
+    "module": "ESNext",
+    "target": "ES6",
     "experimentalDecorators": true,
+    "strictNullChecks": false,
     "declaration": true,
-    "lib": ["es2015", "dom"]
+    "rootDir": "./src",
+    "outDir": "./lib",
+    "strict": false,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "moduleResolution": "node"
   },
   "compileOnSave": false,
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "*/**.d.ts"
   ]
 }

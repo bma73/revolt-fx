@@ -1,17 +1,18 @@
 /// <reference types="pixi.js" />
 
-import {IEffectSequenceSettings, IEmitterSettings, FX, IParticleEmitterParent} from "./FX";
-import {Node} from "./util/LinkedList";
+import * as PIXI from "pixi.js";
+import { IEffectSequenceSettings, IEmitterSettings, FX, IParticleEmitterParent } from "./FX";
+import { Node } from "./util/LinkedList";
 
-export class BaseEffect extends Node  {
+export class BaseEffect extends Node {
 
-    public container: PIXI.Container;
+    public container!: PIXI.Container;
     public exhausted: boolean = false;
     public completed: boolean = false;
 
-    public name: string;
+    public name: string = "";
 
-    public endTime: number;
+    public endTime: number = 0;
 
     protected _x: number = 0;
     protected _y: number = 0;
@@ -19,7 +20,7 @@ export class BaseEffect extends Node  {
     protected _alpha: number = 0;
 
     protected _scale: PIXI.Point = new PIXI.Point();
-    protected _time: number;
+    protected _time: number = 0;
 
     protected _active: boolean = false;
 

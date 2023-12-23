@@ -9,7 +9,7 @@ export class LinkedList {
     }
 
     // *********************************************************************************************
-    // * Public																                                        					   *
+    // * Public																                       *
     // *********************************************************************************************
     public get length(): number {
         return this.__length;
@@ -64,7 +64,7 @@ export class LinkedList {
     }
 
     public toArray(): Node[] {
-        const ret = [];
+        const ret: Node[] = [];
         if (!this.first) return ret;
         let node = this.first;
         while (node) {

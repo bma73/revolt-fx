@@ -1,4 +1,4 @@
-/// <reference types="pixi.js" />
+import * as PIXI from "pixi.js";
 import { ParticleEmitter } from "./ParticleEmitter";
 import { BaseEffect } from "./BaseEffect";
 import { EffectSequence } from "./EffectSequence";
@@ -6,16 +6,8 @@ import { Sprite } from "./Sprite";
 import { Particle } from "./Particle";
 import { BaseEmitterCore } from "./core/BaseEmitterCore";
 import { MovieClip } from "./MovieClip";
-declare enum ComponentType {
-    Sprite = 0,
-    MovieClip = 1
-}
-declare enum EffectSequenceComponentType {
-    Sprite = 0,
-    MovieClip = 1,
-    Emitter = 2,
-    Trigger = 3
-}
+import { ComponentType } from "./ComponentType";
+import { EffectSequenceComponentType } from "./EffectSequenceComponentType";
 export declare class FX {
     static settingsVersion: number;
     static readonly version: string;
@@ -26,7 +18,6 @@ export declare class FX {
     effectSequenceCount: number;
     maxParticles: number;
     particleFac: number;
-    fix: any;
     private _active;
     private _timeElapsed;
     private _cache;
@@ -46,8 +37,7 @@ export declare class FX {
     clearCache(): void;
     setFloorY(value: number): void;
     dispose(): void;
-    loadBundleFiles(bundleSettingsUrl: string, spritesheetUrl: string, spritesheetFilter?: string, additionalAssets?: string[] | IAdditionalAsset[]): Promise<IParseSpriteSheetResult>;
-    loadBundleZip(zipUrl: any, jszipInstance: any, additionalAssets?: string[] | IAdditionalAsset[]): Promise<IParseSpriteSheetResult>;
+    loadBundleFiles(bundleSettingsUrl: string, spritesheetUrl: string, spritesheetFilter?: string, additionalAssets?: string[]): Promise<IParseSpriteSheetResult>;
     initBundle(bundleSettings: any, clearCache?: boolean): IParseSpriteSheetResult;
     addParticleEmitter(componentId: string, settings: IEmitterSettings): FX;
     addEffectSequence(componentId: string, settings: IEffectSequenceSettings): FX;
@@ -252,9 +242,9 @@ export interface IParticleEmitterParent {
 export interface IParticle extends IParticleEmitterParent {
     componentId: string;
     init(emitter: ParticleEmitter, def: IParticleSettings, scaleMod?: number): IParticle;
-    update(dt: number): any;
-    recycle(): any;
-    dispose(): any;
+    update(dt: number): void;
+    recycle(): void;
+    dispose(): void;
 }
 export interface IParseSpriteSheetResult {
     sprites: string[];
@@ -264,4 +254,3 @@ export interface IAdditionalAsset {
     name: string;
     url: string;
 }
-export {};
