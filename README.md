@@ -1,8 +1,14 @@
 ![logo](https://samples.revoltfx.electronauts.net/assets/rfx-logo.png)
 
 # RevoltFX
-Particle and effect system for Pixi.js  
+
+> #####Compatible with PixiJS 7.x
+
+Particle and effect system for PixiJS
 Create particle emitters and time based effect sequences. Emitters and sequences can be nested and spawned on different particle events.
+
+<a href="https://www.buymeacoffee.com/bma73" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
 
 **Check out the samples**  
 **<https://samples.revoltfx.electronauts.net>**
@@ -54,22 +60,21 @@ There are different ways to load the needed assets:
 //Create a RevoltFX instance
 const fx = new revolt.FX(); //loaded via the script tag
 
-//Load the assets using PIXI loader...
-PIXI.loader
-    .add('fx_settings', 'assets/default-bundle.json')
-    .add('fx_spritesheet', 'assets/revoltfx-spritesheet.json')
-    .add('example_spritesheet', 'assets/rfx-examples.json')
-    .load(function (loader, resources) {
-		
-		//Init the bundle
-		fx.initBundle(resources.fx_settings.data);
-				
-		app.ticker.add(function () {
-		    //Update the RevoltFX instance
-		    fx.update();
-		});
+//Load the assets using PIXI Assets loader
+PIXI.Assets.add({ alias: 'fx_settings', src: 'assets/default-bundle.json' });
+PIXI.Assets.add({ alias: 'fx_spritesheet', src: 'assets/revoltfx-spritesheet.json' });
+PIXI.Assets.add({ alias: 'example_spritesheet', src: 'assets/rfx-examples.json' });
 
+PIXI.Assets.load(['fx_settings', 'fx_spritesheet', 'example_spritesheet']).then(function (data) {
+    //Init the bundle
+    fx.initBundle(data.fx_settings);
+
+    app.ticker.add(function () {
+        //Update the RevoltFX instance
+        fx.update();
     });
+
+});
 ```
 
 **Using FX.loadBundleFiles** [(Example)](https://github.com/bma73/revolt-fx/blob/master/examples/loadbundle2.html)
@@ -95,28 +100,7 @@ PIXI.loader
     });
 ```
 
-**Using FX.loadBundleZip** [(Example)](https://github.com/bma73/revolt-fx/blob/master/examples/loadbundle3.html)
 
-You can pass a [JSZip](https://stuk.github.io/jszip/) instance to the **loadBundleZip** method to load the bundle zip file exported by the [editor](https://github.com/bma73/revolt-fx-editor).
-
-```js
-//Create a RevoltFX instance
-const fx = new revolt.FX(); //loaded via the script tag
-
-//Create a JSZip instance and pass it to the "loadBundleZip" method
-const zip = new JSZip();
-
-fx.loadBundleZip('assets/default-bundle.zip', zip, ['assets/rfx-examples.json']).then(function (data) {
-
-       app.ticker.add(function () {
-        //Update the RevoltFX instance
-        fx.update();
-    });
-
-}).catch(function (err) {
-    console.log('Error', err);
-});
-```
 
 ### Particle Emitters
 After the system is initialized you can create particle emitters defined in your bundle by using their names:
@@ -290,28 +274,12 @@ app.ticker.add(function (delta) {
 });
 ```
 
-#### "Add" BlendMode artifacts with WebGL renderer####
-
-If you encounter black artifacts on transparent particle areas which are using the "Add" blendmode (e.g. on mobile), try to hack the blendmode settings of the WebGL renderer instance:
-
-```js
-const renderer = app.renderer;
-const gl = renderer.gl;
-renderer.state.blendModes[PIXI.BLEND_MODES.ADD] = [gl.ONE, gl.ONE];
-```
-
-
 ## Build
-If you haven't already installed Grunt get it with
-
-```sh
-npm install -g grunt-cli
-```
- 
 
 Clone the repository and to compile the Typescript sources and create the distribution version run  
  
 ```sh
 npm install
-npm run dist
+npm run tsc
+npm run rollup
 ```

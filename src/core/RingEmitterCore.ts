@@ -1,10 +1,11 @@
 /// <reference types="pixi.js" />
 
-import {BaseEmitterCore} from "./BaseEmitterCore";
-import {ParticleEmitter} from "../ParticleEmitter";
-import {Particle} from "../Particle";
-import {IRingCoreParams} from "../FX";
-import {Rnd} from "../util/Rnd";
+import * as PIXI from "pixi.js";
+import { BaseEmitterCore } from "./BaseEmitterCore";
+import { ParticleEmitter } from "../ParticleEmitter";
+import { Particle } from "../Particle";
+import { IRingCoreParams } from "../FX";
+import { Rnd } from "../util/Rnd";
 
 export class RingEmitterCore extends BaseEmitterCore {
 
@@ -16,7 +17,7 @@ export class RingEmitterCore extends BaseEmitterCore {
     }
 
     // *********************************************************************************************
-    // * Public																		                                         			   *
+    // * Public																		               *
     // *********************************************************************************************
 
 
@@ -24,7 +25,7 @@ export class RingEmitterCore extends BaseEmitterCore {
         super.prepare(spawnCount);
 
         const angle = (<IRingCoreParams>this._settings).angle;
-        if (2 * Math.PI - angle < 0.1 ) {
+        if (2 * Math.PI - angle < 0.1) {
             this._uniformStep = angle / (spawnCount);
             this._angle = angle;
         } else {
@@ -48,17 +49,17 @@ export class RingEmitterCore extends BaseEmitterCore {
         }
 
         const r = settings.radius * this.__scaleMod;
-        (<PIXI.Transform> particle.component.transform).position.x = (this.__x + this._t * (this.x - this.__x)) + Math.cos(angle) * r;
-        (<PIXI.Transform> particle.component.transform).position.y = (this.__y + this._t * (this.y - this.__y)) + Math.sin(angle) * r;
+        (<PIXI.Transform>particle.component.transform).position.x = (this.__x + this._t * (this.x - this.__x)) + Math.cos(angle) * r;
+        (<PIXI.Transform>particle.component.transform).position.y = (this.__y + this._t * (this.y - this.__y)) + Math.sin(angle) * r;
 
         if (settings.radial) {
             particle.dx = Math.cos(angle);
             particle.dy = Math.sin(angle);
-            (<PIXI.Transform> particle.component.transform).rotation = angle;
+            (<PIXI.Transform>particle.component.transform).rotation = angle;
         } else {
             particle.dx = this._dx;
             particle.dy = this._dy;
-            (<PIXI.Transform> particle.component.transform).rotation = emitter.rotation;
+            (<PIXI.Transform>particle.component.transform).rotation = emitter.rotation;
         }
 
         this._t += this._posInterpolationStep;
@@ -66,11 +67,11 @@ export class RingEmitterCore extends BaseEmitterCore {
     }
 
     // *********************************************************************************************
-    // * Private																	                                        			   *
+    // * Private																	               *
     // *********************************************************************************************
 
     // *********************************************************************************************
-    // * Events															                                        						   *
+    // * Events															                           *
     // *********************************************************************************************
 
 }

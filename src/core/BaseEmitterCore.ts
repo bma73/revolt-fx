@@ -1,6 +1,6 @@
-import {Particle} from "../Particle";
-import {IBoxCoreParams, ICircleCoreParams, IRingCoreParams} from "../FX";
-import {ParticleEmitter} from "../ParticleEmitter";
+import { Particle } from "../Particle";
+import { IBoxCoreParams, ICircleCoreParams, IRingCoreParams } from "../FX";
+import { ParticleEmitter } from "../ParticleEmitter";
 
 export class BaseEmitterCore {
 
@@ -29,7 +29,7 @@ export class BaseEmitterCore {
     }
 
     // *********************************************************************************************
-    // * Public			                                        																		   *
+    // * Public			                                        								   *
     // *********************************************************************************************
     public init(emitter: ParticleEmitter) {
         this.emitter = emitter;

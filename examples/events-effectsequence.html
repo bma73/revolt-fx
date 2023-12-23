@@ -1,79 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>RevoltFX // Events Effect Sequence</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.1/pixi.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+    <script src="https://unpkg.com/pixi.js@7.x/dist/pixi.min.js"></script>
     <script src="js/revoltfx.min.js"></script>
     <link href="styles.css" rel=stylesheet>
 </head>
+
 <body>
-<div id="canvas">
-</div>
+    <div id="canvas">
+    </div>
 
-<script src="js/setup-app.js"></script>
+    <script src="js/setup-app.js"></script>
 
-<script>
+    <script>
 
-    var container = new PIXI.Container();
-    var debug = new PIXI.Graphics();
-    app.stage.addChild(container);
-    app.stage.addChild(debug);
+        var container = new PIXI.Container();
+        var debug = new PIXI.Graphics();
+        app.stage.addChild(container);
+        app.stage.addChild(debug);
 
-    //Create a RevoltFX instance
-    var fx = new revolt.FX();
+        //Create a RevoltFX instance
+        var fx = new revolt.FX();
 
-    //Create a JSZip instance and pass it to the "loadBundleZip" method
-    var zip = new JSZip();
+        PIXI.Assets.add({ alias: 'fx_settings', src: 'assets/default-bundle.json' });
+        PIXI.Assets.add({ alias: 'fx_spritesheet', src: 'assets/revoltfx-spritesheet.json' });
+        PIXI.Assets.add({ alias: 'example_spritesheet', src: 'assets/rfx-examples.json' });
 
-    fx.loadBundleZip('assets/default-bundle.zip', zip, ['assets/rfx-examples.json']).then(function (data) {
+        PIXI.Assets.load(['fx_settings', 'fx_spritesheet', 'example_spritesheet']).then(function (data) {
+            //Init the bundle
+            fx.initBundle(data.fx_settings);
+            var sequence = fx.getEffectSequence('side-gold-loot');
+            sequence.init(container);
+            sequence.x = width * 0.5;
+            sequence.y = height * 0.5;
 
-        var sequence = fx.getEffectSequence('side-gold-loot');
-        sequence.init(container);
-        sequence.x = width * 0.5;
-        sequence.y = height * 0.5;
+            //Register for an effect spawned signal (event)
+            sequence.on.effectSpawned.add(function (type, effect) {
 
-        //Register for an effect spawned signal (event)
-        sequence.on.effectSpawned.add(function (type, effect) {
+                if (type === revolt.EffectSequenceComponentType.Emitter && effect.name === 'side-gold-loot') {
 
-            if (type === revolt.FX.EffectSequenceComponentType.Emitter && effect.name === 'side-gold-loot') {
+                    //Register for a particle spawned signal (event)
+                    effect.on.particleSpawned.add(function (particle) {
+                        drawDot(particle.x, particle.y, 20, 0x00ff00);
 
-                //Register for a particle spawned signal (event)
-                effect.on.particleSpawned.add(function (particle) {
-                    drawDot(particle.x, particle.y, 20, 0x00ff00);
+                        //Register for an update signal for that particle
+                        particle.on.updated.add(function (particle) {
+                            drawDot(particle.x, particle.y, 5, 0x00ff00);
+                        });
 
-                    //Register for an update signal for that particle
-                    particle.on.updated.add(function (particle) {
-                        drawDot(particle.x, particle.y, 5, 0x00ff00);
+                        //Register for a died signal for that particle
+                        particle.on.died.add(function (particle) {
+                            drawDot(particle.x, particle.y, 15, 0xff0000);
+                        });
                     });
+                }
+            });
 
-                    //Register for a died signal for that particle
-                    particle.on.died.add(function (particle) {
-                        drawDot(particle.x, particle.y, 15, 0xff0000);
-                    });
-                });
-            }
+            sequence.on.triggerActivated.add(function (triggerValue) {
+                console.log(triggerValue);
+            });
+
+        }).catch(function (err) {
+            console.log('Error', err);
         });
 
-        sequence.on.triggerActivated.add(function (triggerValue) {
-            console.log(triggerValue);
+        app.ticker.add(function () {
+            //Update the RevoltFX instance
+            fx.update();
         });
 
-    }).catch(function (err) {
-        console.log('Error', err);
-    });
+        function drawDot(x, y, size, color) {
+            debug.beginFill(color, 0.2).drawCircle(x, y, size).endFill();
+        }
 
-    app.ticker.add(function () {
-        //Update the RevoltFX instance
-        fx.update();
-    });
-
-    function drawDot(x, y, size, color) {
-        debug.beginFill(color, 0.2).drawCircle(x, y, size).endFill();
-    }
-
-</script>
+    </script>
 </body>
+
 </html>

@@ -1,10 +1,11 @@
 /// <reference types="pixi.js" />
 
-import {IBoxCoreParams} from "../FX";
-import {Particle} from "../Particle";
-import {ParticleEmitter} from "../ParticleEmitter";
-import {BaseEmitterCore} from "./BaseEmitterCore";
-import {Rnd} from "../util/Rnd";
+import * as PIXI from "pixi.js";
+import { IBoxCoreParams } from "../FX";
+import { Particle } from "../Particle";
+import { ParticleEmitter } from "../ParticleEmitter";
+import { BaseEmitterCore } from "./BaseEmitterCore";
+import { Rnd } from "../util/Rnd";
 
 
 export class BoxEmitterCore extends BaseEmitterCore {
@@ -31,11 +32,11 @@ export class BoxEmitterCore extends BaseEmitterCore {
         const y = Rnd.float(-h2, h2);
 
         if (angle != 0) {
-            (<PIXI.Transform> particle.component.transform).position.x = (this.__x + this._t * (this.x - this.__x)) + x * Math.cos(angle) - y * Math.sin(angle);
-            (<PIXI.Transform> particle.component.transform).position.y = (this.__y + this._t * (this.y - this.__y)) + x * Math.sin(angle) + y * Math.cos(angle);
+            (<PIXI.Transform>particle.component.transform).position.x = (this.__x + this._t * (this.x - this.__x)) + x * Math.cos(angle) - y * Math.sin(angle);
+            (<PIXI.Transform>particle.component.transform).position.y = (this.__y + this._t * (this.y - this.__y)) + x * Math.sin(angle) + y * Math.cos(angle);
         } else {
-            (<PIXI.Transform> particle.component.transform).position.x = this.__x + this._t * (this.x - this.__x) + x;
-            (<PIXI.Transform> particle.component.transform).position.y = this.__y + this._t * (this.y - this.__y) + y;
+            (<PIXI.Transform>particle.component.transform).position.x = this.__x + this._t * (this.x - this.__x) + x;
+            (<PIXI.Transform>particle.component.transform).position.y = this.__y + this._t * (this.y - this.__y) + y;
         }
 
         if (settings.radial) {
@@ -47,7 +48,7 @@ export class BoxEmitterCore extends BaseEmitterCore {
             particle.dy = this._dy;
         }
 
-        (<PIXI.Transform> particle.component.transform).rotation = angle;
+        (<PIXI.Transform>particle.component.transform).rotation = angle;
 
         this._t += this._posInterpolationStep;
 

@@ -1,30 +1,20 @@
 /// <reference types="pixi.js" />
-/// <reference types="jszip" />
 
-import {ParticleEmitter} from "./ParticleEmitter";
-import {LinkedList} from "./util/LinkedList";
-import {RingEmitterCore} from "./core/RingEmitterCore";
-import {CircleEmitterCore} from "./core/CircleEmitterCore";
-import {BoxEmitterCore} from "./core/BoxEmitterCore";
-import {BaseEffect} from "./BaseEffect";
-import {EffectSequence} from "./EffectSequence";
-import {Sprite} from "./Sprite";
-import {Particle} from "./Particle";
-import {BaseEmitterCore} from "./core/BaseEmitterCore";
-import {MovieClip} from "./MovieClip";
-import {Sanitizer} from "./Sanitizer";
-
-enum ComponentType {
-    Sprite,
-    MovieClip
-}
-
-enum EffectSequenceComponentType {
-    Sprite,
-    MovieClip,
-    Emitter,
-    Trigger
-}
+import * as PIXI from "pixi.js";
+import { ParticleEmitter } from "./ParticleEmitter";
+import { LinkedList } from "./util/LinkedList";
+import { RingEmitterCore } from "./core/RingEmitterCore";
+import { CircleEmitterCore } from "./core/CircleEmitterCore";
+import { BoxEmitterCore } from "./core/BoxEmitterCore";
+import { BaseEffect } from "./BaseEffect";
+import { EffectSequence } from "./EffectSequence";
+import { Sprite } from "./Sprite";
+import { Particle } from "./Particle";
+import { BaseEmitterCore } from "./core/BaseEmitterCore";
+import { MovieClip } from "./MovieClip";
+import { Sanitizer } from "./Sanitizer";
+import { ComponentType } from "./ComponentType";
+import { EffectSequenceComponentType } from "./EffectSequenceComponentType";
 
 export class FX {
 
@@ -38,7 +28,7 @@ export class FX {
     public effectSequenceCount: number = 0;
     public maxParticles: number = 5000;
     public particleFac: number = 1;
-    public fix
+
 
     private _active: boolean = false;
     private _timeElapsed: number;
@@ -66,7 +56,7 @@ export class FX {
     }
 
     // *********************************************************************************************
-    // * Public										                                        											   *
+    // * Public										                                        	   *
     // *********************************************************************************************
 
     public start() {
@@ -136,99 +126,23 @@ export class FX {
         this.clearCache();
     }
 
-    public loadBundleFiles(bundleSettingsUrl: string, spritesheetUrl: string, spritesheetFilter: string = '', additionalAssets?: string[] | IAdditionalAsset[]): Promise<IParseSpriteSheetResult> {
-        return new Promise((resolve, reject) => {
-            const loader = new PIXI.Loader();
-            loader.onError.add((err) => {
-                reject(err);
-            });
-            loader
-                .add('rfx_spritesheet', spritesheetUrl)
-                .add('rfx_bundleSettings', bundleSettingsUrl);
+    public loadBundleFiles(bundleSettingsUrl: string, spritesheetUrl: string, spritesheetFilter: string = '', additionalAssets: string[] = []): Promise<IParseSpriteSheetResult> {
+        return new Promise(async (resolve, reject) => {
 
-            if (additionalAssets) {
-                for (let arg of additionalAssets) {
-                    if (arg.hasOwnProperty('name') && arg.hasOwnProperty('url')) {
-                        loader.add((<IAdditionalAsset>arg).name, (<IAdditionalAsset>arg).url);
-                    } else {
-                        loader.add(<string>arg);
-                    }
-                }
+            const data: Record<string, string> = {
+                'rfx_spritesheet': spritesheetUrl,
+                'rfx_bundleSettings': bundleSettingsUrl,
+            };
+
+            for (var i in additionalAssets) {
+                data[i] = additionalAssets[i];
             }
 
-            loader.load((l, d) => {
-                resolve(this.initBundle(d.rfx_bundleSettings.data));
-            });
-        });
-    }
+            PIXI.Assets.addBundle('rfx_assets', data);
+            const assets = await PIXI.Assets.loadBundle('rfx_assets');
 
-    public loadBundleZip(zipUrl, jszipInstance: any, additionalAssets?: string[] | IAdditionalAsset[]): Promise<IParseSpriteSheetResult> {
-        return new Promise((resolve, reject) => {
-            if (jszipInstance == null) {
-                reject('JSZip instance not provided.');
-                return;
-            }
+            resolve(this.initBundle(assets.rfx_bundleSettings));
 
-            const loader = new PIXI.Loader();
-            loader.add('zip', zipUrl, {xhrType: PIXI.LoaderResource.XHR_RESPONSE_TYPE.BLOB});
-
-            if (additionalAssets) {
-                for (let arg of additionalAssets) {
-                    if (arg.hasOwnProperty('name') && arg.hasOwnProperty('url')) {
-                        loader.add((<IAdditionalAsset>arg).name, (<IAdditionalAsset>arg).url);
-                    } else {
-                        loader.add(<string>arg);
-                    }
-                }
-            }
-
-            loader.load(async (l, d) => {
-                try {
-
-                    let spritesheetImageData;
-                    let spritesheetDef;
-                    let settingsDef;
-
-                    await jszipInstance.loadAsync(d.zip.data);
-
-                    const list = [];
-                    jszipInstance.forEach((path, entry) => {
-                        list.push(entry);
-                    });
-
-                    for (let n in list) {
-                        const entry = list[n];
-                        if (entry.name.indexOf('.png') != -1) {
-
-                            const base64 = await entry.async('base64');
-                            spritesheetImageData = `data:image/png;base64,${base64}`;
-
-                        } else if (entry.name.indexOf('.json') != -1) {
-
-                            const s = await entry.async('string');
-                            const def = JSON.parse(s);
-                            if (def.__h) {
-                                if (def.__h !== FX._bundleHash) {
-                                    reject('Invalid settings file.');
-                                    return;
-                                }
-                                settingsDef = def;
-                            } else if (def.frames) {
-                                spritesheetDef = def;
-                            }
-                        }
-                    }
-                    const texture = PIXI.Texture.from(spritesheetImageData);
-                    const spritesheet = new PIXI.Spritesheet(texture.baseTexture, spritesheetDef);
-                    spritesheet.parse(() => {
-                        setTimeout(() => {
-                            resolve(this.initBundle(settingsDef, true));
-                        }, 100);
-                    });
-                } catch (err) {
-                    reject(err.toString());
-                }
-            });
         });
     }
 
@@ -485,18 +399,18 @@ export class FX {
     }
 
     // *********************************************************************************************
-    // * Private													                                        							   *
+    // * Private													                               *
     // *********************************************************************************************
     private parseObject(object: any, filter?: string): IParseSpriteSheetResult {
 
         const frames = object;
-        const mcs = {};
-        const result: IParseSpriteSheetResult = {sprites: [], movieClips: []};
+        const mcs: Record<any, any> = {};
+        const result: IParseSpriteSheetResult = { sprites: [], movieClips: [] };
         for (let i in frames) {
             if (filter && i.indexOf(filter) == -1) {
                 continue;
             }
-            this.initSprite(i, {texture: i, anchorX: 0.5, anchorY: 0.5});
+            this.initSprite(i, { texture: i, anchorX: 0.5, anchorY: 0.5 });
             result.sprites.push(i);
             if (i.substr(0, 3) == 'mc_') {
                 const parts = i.split('_');
@@ -508,7 +422,7 @@ export class FX {
         for (let i in mcs) {
             let textures = mcs[i];
             result.movieClips.push(i);
-            this.initMovieClip(i, {textures: textures, anchorX: 0.5, anchorY: 0.5});
+            this.initMovieClip(i, { textures: textures, anchorX: 0.5, anchorY: 0.5 });
         }
         return result;
     }
@@ -516,7 +430,7 @@ export class FX {
 
 
 // *********************************************************************************************
-// * Interfaces												                                        							   *
+// * Interfaces												                                   *
 // *********************************************************************************************
 
 export interface IBaseEffect {
@@ -603,8 +517,8 @@ export interface IMovieClipSettings {
 export interface ICoreSettings {
     type: string;
     params: ICircleCoreParams |
-        IRingCoreParams |
-        IBoxCoreParams
+    IRingCoreParams |
+    IBoxCoreParams
 }
 
 export interface ICircleCoreParams {
@@ -721,7 +635,7 @@ export interface IBaseComponentParams {
 }
 
 export interface IParticleEmitterParent {
-    __removeChildEmitter(emitter: any);
+    __removeChildEmitter(emitter: any): any;
 }
 
 export interface IParticle extends IParticleEmitterParent {
@@ -729,11 +643,11 @@ export interface IParticle extends IParticleEmitterParent {
 
     init(emitter: ParticleEmitter, def: IParticleSettings, scaleMod?: number): IParticle;
 
-    update(dt: number);
+    update(dt: number): void;
 
-    recycle();
+    recycle(): void;
 
-    dispose();
+    dispose(): void;
 }
 
 export interface IParseSpriteSheetResult {

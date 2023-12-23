@@ -1,6 +1,6 @@
 /// <reference types="pixi.js" />
 
-import {FX} from "./FX";
+import { FX } from "./FX";
 import * as PIXI from 'pixi.js';
 
 export class MovieClip extends PIXI.AnimatedSprite {
@@ -28,8 +28,8 @@ export class MovieClip extends PIXI.AnimatedSprite {
     public recycle() {
         this.alpha = 1;
         this.tint = 0xffffff;
-        (<PIXI.Transform> this.transform).rotation = 0;
-        (<PIXI.Transform> this.transform).scale.set(1);
+        (<PIXI.Transform>this.transform).rotation = 0;
+        (<PIXI.Transform>this.transform).scale.set(1);
         if (this.parent) this.parent.removeChild(this);
         this.gotoAndStop(0);
         this.__fx.__recycleMovieClip(this.componentId, this);
@@ -43,11 +43,11 @@ export class MovieClip extends PIXI.AnimatedSprite {
     }
 
     // *********************************************************************************************
-    // * Private																				                                           *
+    // * Private																				   *
     // *********************************************************************************************
 
     // *********************************************************************************************
-    // * Events																		                                        			   *
+    // * Events																		               *
     // *********************************************************************************************
 
 }

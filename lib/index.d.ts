@@ -14,3 +14,5 @@ export { Easing } from "./util/Easing";
 export { LinkedList } from "./util/LinkedList";
 export { Rnd } from "./util/Rnd";
 export { FXSignal } from "./util/FXSignal";
+export { ComponentType } from "./ComponentType";
+export { EffectSequenceComponentType } from "./EffectSequenceComponentType";

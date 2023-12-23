@@ -1,6 +1,8 @@
-import {LinkedList, Node} from "./LinkedList";
-import {Particle} from "../Particle";
-import {ParticleEmitter} from "../ParticleEmitter";
+import { LinkedList, Node } from "./LinkedList";
+import { Particle } from "../Particle";
+import { ParticleEmitter } from "../ParticleEmitter";
+import { MovieClip } from "../MovieClip";
+import { Sprite } from "../Sprite";
 
 export class FXSignal {
 
@@ -21,7 +23,7 @@ export class FXSignal {
         this.__hasCallback = true;
     }
 
-    public dispatch(...params) {
+    public dispatch(...params: any[]) {
 
         const list = this._list;
         let node = list.first;
@@ -69,10 +71,9 @@ export class FXSignal {
 }
 
 export class FXSignalListener {
-    public calls:number = 0;
+    public calls: number = 0;
     constructor(public callback: Function,
-                public scope?: any,
-                public once?: boolean,
-                public callRate?:number)
-    {}
+        public scope?: any,
+        public once?: boolean,
+        public callRate?: number) { }
 }

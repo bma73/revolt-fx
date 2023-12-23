@@ -1,25 +1,51 @@
 {
   "name": "revolt-fx",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Particle and Effect System for Pixi.js",
   "main": "./lib/index.js",
-  "scripts": {},
+  "scripts": {
+    "tsc": "tsc",
+    "rollup": "rollup -c"
+  },
+  "keywords": [
+    "Pixi.js",
+    "PixiJS",
+    "Particles",
+    "FX",
+    "Effects",
+    "Particle System",
+    "Effect System"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bma73/revolt-fx.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bma73/revolt-fx/issues"
+  },
+  "homepage": "https://github.com/bma73/revolt-fx#readme",
+  "files": [
+    "lib/**/*.js",
+    "dist/*.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "type": "module",
   "author": "Björn Acker <bjoern@electronauts.net>",
   "license": "MIT",
   "devDependencies": {
-    "@types/jszip": "^3.4.1",
+    "@babel/core": "^7.23.6",
+    "@babel/plugin-transform-runtime": "^7.23.6",
+    "@babel/preset-env": "^7.23.6",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/node": "^14.0.13",
-    "grunt": "^1.1.0",
-    "grunt-browserify": "^5.3.0",
-    "grunt-contrib-clean": "^1.1.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-uglify": "^3.4.0",
-    "grunt-text-replace": "^0.4.0",
-    "grunt-ts": "^6.0.0-beta.22",
-    "typescript": "^3.9.5"
+    "rollup": "^4.9.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
-    "pixi.js": "^5.3.0"
+    "pixi.js": "^7.3.2"
   }
 }

@@ -1,14 +1,15 @@
 /// <reference types="pixi.js" />
 
-import {Node} from "./util/LinkedList";
-import {IParticle, IParticleSettings, FX, IParticleEmitterParent} from "./FX";
-import {Sprite} from "./Sprite";
-import {IParticleEmitterSignals, ParticleEmitter} from "./ParticleEmitter";
-import {Color} from "./util/Color";
-import {Easing} from "./util/Easing";
-import {Rnd} from "./util/Rnd";
-import {MovieClip} from "./MovieClip";
-import {FXSignal} from "./util/FXSignal";
+import * as PIXI from "pixi.js";
+import { Node } from "./util/LinkedList";
+import { IParticle, IParticleSettings, FX, IParticleEmitterParent } from "./FX";
+import { Sprite } from "./Sprite";
+import { ParticleEmitter } from "./ParticleEmitter";
+import { Color } from "./util/Color";
+import { Easing } from "./util/Easing";
+import { Rnd } from "./util/Rnd";
+import { MovieClip } from "./MovieClip";
+import { FXSignal } from "./util/FXSignal";
 
 export interface IParticleSignals {
     died: FXSignal;
@@ -173,7 +174,7 @@ export class Particle extends Node implements IParticle, IParticleEmitterParent 
                 const d = this.distance = Rnd.integer(settings.distanceMin, settings.distanceMax) * 0.8 * scaleMod;
                 this.deltaX = ((transform.position.x + d * this.dx) - this.startX) * 0.8;
                 this.deltaY = ((transform.position.y + d * this.dy) - this.startY) * 0.8;
-                this.distanceEase = Easing[settings.distanceEase];
+                this.distanceEase = (Easing as any)[settings.distanceEase];
                 this.useAlign = false;
             } else {
                 transform.position.x = this.startX;
@@ -189,13 +190,13 @@ export class Particle extends Node implements IParticle, IParticleEmitterParent 
         if (settings.useAlpha) {
             this.alphaStart = component.alpha = Rnd.float(settings.alphaStartMin, settings.alphaStartMax);
             this.alphaDelta = Rnd.float(settings.alphaEndMin, settings.alphaEndMax) - this.alphaStart;
-            this.alphaEase = Easing[settings.alphaEase] || null;
+            this.alphaEase = (Easing as any)[settings.alphaEase] || null;
 
             this.useFadeIn = settings.fadeIn;
             if (settings.fadeIn) {
                 this.alphaDuration = duration * (1 - settings.fadeInDurationFac);
                 this.fadeInDuration = duration * settings.fadeInDurationFac;
-                this.fadeInEase = Easing[settings.fadeInEase || 'easeInSine'];
+                this.fadeInEase = (Easing as any)[settings.fadeInEase || 'easeInSine'];
             }
         }
 
@@ -206,7 +207,7 @@ export class Particle extends Node implements IParticle, IParticleEmitterParent 
 
             if (settings.useScale) {
                 this.uniformScale = settings.uniformScale;
-                this.scaleEase = Easing[settings.scaleEase];
+                this.scaleEase = (Easing as any)[settings.scaleEase];
 
                 if (settings.uniformScale) {
                     this.scaleStart = transform.scale.x = transform.scale.y = Rnd.float(settings.scaleStartMin, settings.scaleStartMax) * scaleMod;
@@ -214,16 +215,16 @@ export class Particle extends Node implements IParticle, IParticleEmitterParent 
                 } else {
                     this.scaleXStart = transform.scale.x = Rnd.float(settings.scaleXStartMin, settings.scaleXStartMax) * scaleMod;
                     this.scaleXDelta = (Rnd.float(settings.scaleXEndMin, settings.scaleXEndMax) - this.scaleXStart) * scaleMod;
-                    this.scaleXEase = Easing[settings.scaleXEase];
+                    this.scaleXEase = (Easing as any)[settings.scaleXEase];
                     this.scaleYStart = transform.scale.y = Rnd.float(settings.scaleYStartMin, settings.scaleYStartMax) * scaleMod;
                     this.scaleYDelta = (Rnd.float(settings.scaleYEndMin, settings.scaleYEndMax) - this.scaleYStart) * scaleMod;
-                    this.scaleYEase = Easing[settings.scaleYEase];
+                    this.scaleYEase = (Easing as any)[settings.scaleYEase];
                 }
 
                 if (settings.scaleIn) {
                     this.scaleDuration = duration * (1 - settings.scaleInDurationFac);
                     this.scaleInDuration = duration * settings.scaleInDurationFac;
-                    this.scaleInEase = Easing[settings.scaleInEase || 'easeInSine'];
+                    this.scaleInEase = (Easing as any)[settings.scaleInEase || 'easeInSine'];
                 }
 
             } else {
@@ -244,7 +245,7 @@ export class Particle extends Node implements IParticle, IParticleEmitterParent 
         }
 
         if (settings.useTint) {
-            this.tintEase = Easing[settings.tintEase];
+            this.tintEase = (Easing as any)[settings.tintEase];
             this._color.setRgb(settings.tintStart, settings.tintEnd);
         }
 

@@ -1,12 +1,13 @@
 /// <reference types="pixi.js" />
 
-import {BaseEffect} from "./BaseEffect";
-import {IEmitterSettings, IMovieClipComponentParams, IParticleEmitterParent} from "./FX";
-import {LinkedList} from "./util/LinkedList";
-import {BaseEmitterCore} from "./core/BaseEmitterCore";
-import {Particle} from "./Particle";
-import {Rnd} from "./util/Rnd";
-import {FXSignal} from "./util/FXSignal";
+import * as PIXI from "pixi.js";
+import { BaseEffect } from "./BaseEffect";
+import { IEmitterSettings, IMovieClipComponentParams, IParticleEmitterParent } from "./FX";
+import { LinkedList } from "./util/LinkedList";
+import { BaseEmitterCore } from "./core/BaseEmitterCore";
+import { Particle } from "./Particle";
+import { Rnd } from "./util/Rnd";
+import { FXSignal } from "./util/FXSignal";
 
 export interface IParticleEmitterSignals {
     started: FXSignal;
@@ -153,7 +154,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
 
         if (!this.exhausted) {
             if (this.settings.autoRotation !== 0) {
-               this.rotation += this.settings.autoRotation * (dt / 0.016666);
+                this.rotation += this.settings.autoRotation * (dt / 0.016666);
             }
             if (this.target) {
                 this.rotation = this.target.rotation;
@@ -231,8 +232,8 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
                     p.componentId = <string>ps.componentId;
                     component = fx.__getMovieClip(p.componentId);
                     if (ps.componentParams) {
-                        component.loop = (<IMovieClipComponentParams> ps.componentParams).loop == null || !(<IMovieClipComponentParams> ps.componentParams).loop ? false : true;
-                        component.animationSpeed = Rnd.float((<IMovieClipComponentParams> ps.componentParams).animationSpeedMin || 1, (<IMovieClipComponentParams> ps.componentParams).animationSpeedMax || 1);
+                        component.loop = (<IMovieClipComponentParams>ps.componentParams).loop == null || !(<IMovieClipComponentParams>ps.componentParams).loop ? false : true;
+                        component.animationSpeed = Rnd.float((<IMovieClipComponentParams>ps.componentParams).animationSpeedMin || 1, (<IMovieClipComponentParams>ps.componentParams).animationSpeedMax || 1);
                     }
                     component.gotoAndPlay(0);
                     break;
@@ -494,7 +495,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
                         container = fx.__containers[component.settings.containerId] || this.container;
                         component.init(container, 0, true, (def.scale || 1) * this._scaleMod);
                         if (def.adoptRotation) {
-                           component.rotation = particle.component.rotation;
+                            component.rotation = particle.component.rotation;
                         }
                         break;
                 }
@@ -522,7 +523,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
 
     }
 
-    public __setCore(type) {
+    public __setCore(type: string) {
         this.core = this.__fx.__getEmitterCore(type, this);
         this.core.init(this);
         this.core.__scaleMod = this._scaleMod;
