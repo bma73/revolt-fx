@@ -28,7 +28,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
 
     public core: BaseEmitterCore;
 
-    public settings: IEmitterSettings;
+    public settings: IEmitterSettings | undefined;
     public autoRecycleOnComplete: boolean = true;
 
     private _particles: LinkedList = new LinkedList();
@@ -45,7 +45,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
     private _scaleMod: number;
     private _paused: boolean = false;
 
-    public __parent: IParticleEmitterParent;
+    public __parent: IParticleEmitterParent | undefined;
     public __adoptRotation: boolean = false;
 
     public __on: IParticleEmitterSignals = {
@@ -73,10 +73,10 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
     }
 
     public start(): ParticleEmitter {
-        if (this._active) return;
+        if (this._active) return this;
 
         const t = Date.now();
-        const s = this.settings;
+        const s = this.settings!;
         const RX = this.__fx;
 
         RX.emitterCount++;
@@ -103,7 +103,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
             while (--l > -1) {
                 const def = s.childs[l];
                 const em = RX.getParticleEmitterById(def.id);
-                const container = RX.__containers[em.settings.containerId] || this.container;
+                const container = RX.__containers[em.settings!.containerId] || this.container;
                 em.init(container, true, (def.scale || 1) * (this._scaleMod || 1));
                 if (def.adoptRotation) {
                     em.rotation = this._rotation;
@@ -148,13 +148,14 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
 
     public update(dt: number): ParticleEmitter {
 
-        if (!this._active) return;
+        if (!this._active) return this;
         const t = Date.now();
 
+        const s = this.settings!;
 
         if (!this.exhausted) {
-            if (this.settings.autoRotation !== 0) {
-                this.rotation += this.settings.autoRotation * (dt / 0.016666);
+            if (this.settings!.autoRotation !== 0) {
+                this.rotation += s.autoRotation * (dt / 0.016666);
             }
             if (this.target) {
                 this.rotation = this.target.rotation;
@@ -175,7 +176,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
                 if (this._time >= this._nextSpawnTime) {
                     this._time = 0;
                     this.spawn();
-                    this._nextSpawnTime = this._time + Rnd.float(this.settings.spawnFrequencyMin, this.settings.spawnFrequencyMax);
+                    this._nextSpawnTime = this._time + Rnd.float(s.spawnFrequencyMin, s.spawnFrequencyMax);
                 }
             } else {
                 this.exhausted = true;
@@ -207,16 +208,16 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
     }
 
     public spawn(): ParticleEmitter {
-        if (this._paused) return;
+        if (this._paused) return this;
 
-        const s = this.settings;
+        const s = this.settings!;
         const fx = this.__fx;
 
         let n = Rnd.integer(s.spawnCountMin, s.spawnCountMax) * fx.particleFac;
         this.core.prepare(n);
 
         while (--n > -1) {
-            if (this._particleCount >= s.maxParticles || fx.particleCount >= fx.maxParticles) return;
+            if (this._particleCount >= s.maxParticles || fx.particleCount >= fx.maxParticles) return this;
 
             const ps = s.particleSettings;
             const p = <Particle>fx.__getParticle();
@@ -265,12 +266,12 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
 
         if (this.__parent) {
             this.__parent.__removeChildEmitter(this);
-            this.__parent = null;
+            this.__parent = undefined;
         }
 
         this.recycleParticles();
 
-        this.settings = null;
+        this.settings = undefined;
         this._active = false;
         this._paused = false;
         this.completed = true;
