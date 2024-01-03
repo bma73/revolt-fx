@@ -34,12 +34,13 @@ Fork the editor on Github
 
 https://github.com/bma73/revolt-fx-examples
 
+---
 
 ## Install
 Via NPM
 
 ```sh
-npm install revolt-fx
+npm install revolt-fx --legacy-peer-deps
 ```
 
 ```js
@@ -66,7 +67,7 @@ or via script tag
 const fx = new revolt.FX()
 ```
 
-
+----
 
 ## Usage
 ### Loading and initializing
@@ -291,6 +292,74 @@ app.ticker.add(function (delta) {
     fx.update(delta);
 });
 ```
+---- 
+
+## Bundler
+
+It's important that there is only one Pixi instance in your app. Here are some setup instructions for Webpack, Rollup and Parcel:
+
+#### Webpack
+
+Webpack provides a feature called "aliasing" that you can use to ensure that only one Pixi instance is bundled and used.
+
+Update **webpack.config.js**:
+Add an alias for PixiJS in your Webpack configuration file.
+
+```js
+const path = require('path');
+
+module.exports = {
+  // ... other configurations ...
+  resolve: {
+    alias: {
+      'pixi.js': path.resolve(__dirname, 'node_modules/pixi.js')
+    }
+  }
+};
+```
+
+#### Rollup
+
+Install Rollup Alias Plugin:
+```sh
+npm install @rollup/plugin-alias --save-dev
+```
+
+Update your **rollup.config.js** to include the alias configuration.
+
+```js
+import alias from '@rollup/plugin-alias';
+import path from 'path';
+
+export default {
+  // ... other configurations ...
+  plugins: [
+    // ... other plugins ...
+    alias({
+      entries: [
+        { find: 'pixi.js', replacement: path.resolve(__dirname, 'node_modules/pixi.js') }
+      ]
+    })
+  ]
+};
+```
+
+#### Parcel
+
+Add an alias for PixiJS in your **package.json**.
+
+```js
+{
+  // ... other package.json settings ...
+  "alias": {
+    "pixi.js": "./node_modules/pixi.js"
+  }
+}
+```
+
+
+
+----
 
 ## Build
 

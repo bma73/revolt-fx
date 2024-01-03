@@ -1,26 +1,25 @@
 /// <reference types="pixi.js" />
 
-import { TextureCache } from '@pixi/utils';
 import * as PIXI from "pixi.js";
-import { ParticleEmitter } from "./ParticleEmitter";
-import { LinkedList } from "./util/LinkedList";
-import { RingEmitterCore } from "./core/RingEmitterCore";
-import { CircleEmitterCore } from "./core/CircleEmitterCore";
-import { BoxEmitterCore } from "./core/BoxEmitterCore";
 import { BaseEffect } from "./BaseEffect";
-import { EffectSequence } from "./EffectSequence";
-import { Sprite } from "./Sprite";
-import { Particle } from "./Particle";
-import { BaseEmitterCore } from "./core/BaseEmitterCore";
-import { MovieClip } from "./MovieClip";
-import { Sanitizer } from "./Sanitizer";
 import { ComponentType } from "./ComponentType";
+import { EffectSequence } from "./EffectSequence";
 import { EffectSequenceComponentType } from "./EffectSequenceComponentType";
+import { MovieClip } from "./MovieClip";
+import { Particle } from "./Particle";
+import { ParticleEmitter } from "./ParticleEmitter";
+import { Sanitizer } from "./Sanitizer";
+import { Sprite } from "./Sprite";
+import { BaseEmitterCore } from "./core/BaseEmitterCore";
+import { BoxEmitterCore } from "./core/BoxEmitterCore";
+import { CircleEmitterCore } from "./core/CircleEmitterCore";
+import { RingEmitterCore } from "./core/RingEmitterCore";
+import { LinkedList } from "./util/LinkedList";
 
 export class FX {
 
     public static settingsVersion: number = 0;
-    public static readonly version: string = '1.3.1';
+    public static readonly version: string = '1.3.2';
     private static _bundleHash: string = '80c6df7fb0d3d898f34ce0031c037fef';
 
     public useBlendModes: boolean = true;
@@ -437,12 +436,6 @@ export class FX {
      * @returns {IParseSpriteSheetResult} - The parsed sprite sheet result.
      */
     public parseTextureCache(filter?: string): IParseSpriteSheetResult {
-
-        if (TextureCache !== undefined) {
-            // Pixi 7.3.x
-            return this.parseObject(TextureCache, filter);
-        }
-
         return this.parseObject(PIXI['Cache']['_cache'], filter);
     }
 

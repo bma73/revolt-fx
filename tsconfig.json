@@ -13,6 +13,7 @@
       "esnext",
       "dom"
     ],
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node"
   },
   "compileOnSave": false,

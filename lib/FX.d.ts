@@ -1,13 +1,13 @@
 import * as PIXI from "pixi.js";
-import { ParticleEmitter } from "./ParticleEmitter";
 import { BaseEffect } from "./BaseEffect";
-import { EffectSequence } from "./EffectSequence";
-import { Sprite } from "./Sprite";
-import { Particle } from "./Particle";
-import { BaseEmitterCore } from "./core/BaseEmitterCore";
-import { MovieClip } from "./MovieClip";
 import { ComponentType } from "./ComponentType";
+import { EffectSequence } from "./EffectSequence";
 import { EffectSequenceComponentType } from "./EffectSequenceComponentType";
+import { MovieClip } from "./MovieClip";
+import { Particle } from "./Particle";
+import { ParticleEmitter } from "./ParticleEmitter";
+import { Sprite } from "./Sprite";
+import { BaseEmitterCore } from "./core/BaseEmitterCore";
 export declare class FX {
     static settingsVersion: number;
     static readonly version: string;
