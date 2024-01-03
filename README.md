@@ -2,16 +2,20 @@
 
 # RevoltFX
 
-> Compatible with PixiJS 7.x
+> **Compatible with PixiJS 7.3.x and 8.0.0-rc**
 
 Particle and effect system for PixiJS
 Create particle emitters and time based effect sequences. Emitters and sequences can be nested and spawned on different particle events.
 
+
 <a href="https://www.buymeacoffee.com/bma73" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
 
 
 **Check out the samples**  
 **<https://samples.revoltfx.electronauts.net>**
+> *You'll find the according code here: 
+https://github.com/bma73/revolt-fx/releases/tag/pixijs-4.x as it's currently only working with a Pixi legacy version.*
 
 ![samples](https://samples.revoltfx.electronauts.net/assets/samples.png)
 
@@ -25,6 +29,11 @@ Fork the editor on Github
 <https://github.com/bma73/revolt-fx-editor>
 
 ![editor](https://samples.revoltfx.electronauts.net/assets/editor.png)
+
+## Code Examples
+
+https://github.com/bma73/revolt-fx-examples
+
 
 ## Install
 Via NPM
@@ -41,9 +50,17 @@ const fx = new FX()
 or via script tag
 
 ```js
+// Pixi 7.3.x
 <script src="https://unpkg.com/pixi.js@7.x/dist/pixi.min.js"></script>
 <script src="https://unpkg.com/revolt-fx/dist/revoltfx.min.js"></script>
 ```
+
+```js
+// Pixi 8.0.0-rc
+<script src="https://unpkg.com/pixi.js@8.0.0-rc/dist/pixi.min.js"></script>
+<script src="https://unpkg.com/revolt-fx/dist/revoltfx.min.js"></script>
+```
+
 
 ```js
 const fx = new revolt.FX()
@@ -281,6 +298,5 @@ Clone the repository and to compile the Typescript sources and create the distri
  
 ```sh
 npm install
-npm run tsc
-npm run rollup
+npm run build
 ```
