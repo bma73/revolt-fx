@@ -19,7 +19,7 @@ const babelConfig = {
 export default {
     input: './lib/index.js',
     output: {
-        file: '../revolt-fx-examples/src/pixi-7.3.x/UMD/revoltfx.min.js',
+        file: './dist/revoltfx.min.js',
         format: 'iife',
         name: 'revolt',
         globals: {
