@@ -20,7 +20,7 @@ import { EffectSequenceComponentType } from "./EffectSequenceComponentType";
 export class FX {
 
     public static settingsVersion: number = 0;
-    public static readonly version: string = '1.1.0';
+    public static readonly version: string = '1.3.0';
     private static _bundleHash: string = '80c6df7fb0d3d898f34ce0031c037fef';
 
     public useBlendModes: boolean = true;
