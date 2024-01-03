@@ -1,6 +1,6 @@
 /// <reference types="pixi.js" />
 
-import {FX} from "./FX";
+import { FX } from "./FX";
 import * as PIXI from 'pixi.js';
 
 export class Sprite extends PIXI.Sprite {
@@ -20,8 +20,8 @@ export class Sprite extends PIXI.Sprite {
     public recycle() {
         this.tint = 0xffffff;
         this.alpha = 1;
-        (<PIXI.Transform>this.transform).rotation = 0;
-        (<PIXI.Transform>this.transform).scale.set(1);
+        this.rotation = 0;
+        this.scale.set(1);
         if (this.parent) this.parent.removeChild(this);
         this.__fx.__recycleSprite(this.componentId, this);
     }

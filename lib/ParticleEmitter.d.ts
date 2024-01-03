@@ -18,7 +18,7 @@ export declare class ParticleEmitter extends BaseEffect implements IParticleEmit
     target: PIXI.DisplayObject;
     targetOffset: number;
     core: BaseEmitterCore;
-    settings: IEmitterSettings;
+    settings: IEmitterSettings | undefined;
     autoRecycleOnComplete: boolean;
     private _particles;
     private _particleCount;
@@ -30,7 +30,7 @@ export declare class ParticleEmitter extends BaseEffect implements IParticleEmit
     private _nextSpawnTime;
     private _scaleMod;
     private _paused;
-    __parent: IParticleEmitterParent;
+    __parent: IParticleEmitterParent | undefined;
     __adoptRotation: boolean;
     __on: IParticleEmitterSignals;
     constructor(componentId: string);

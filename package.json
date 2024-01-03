@@ -5,7 +5,8 @@
   "main": "./lib/index.js",
   "scripts": {
     "tsc": "tsc",
-    "rollup": "rollup -c"
+    "rollup": "rollup -c",
+    "build": "npm run tsc & npm run rollup"
   },
   "keywords": [
     "Pixi.js",
@@ -45,7 +46,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "typescript": "^5.3.3"
   },
-  "dependencies": {
-    "pixi.js": "^7.3.2"
+  "peerDependencies": {
+    "pixi.js": "^7.3.x | ^8.x"
   }
 }

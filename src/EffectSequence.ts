@@ -98,12 +98,13 @@ export class EffectSequence extends BaseEffect {
             const fx = this.__fx;
             const def = this._nextEffectSettings;
             let effect: Sprite | MovieClip | ParticleEmitter;
-            let node;
+            let node: Node;
+            let container: PIXI.Container;
 
             switch (def.componentType) {
                 case EffectSequenceComponentType.Sprite:
                     effect = fx.__getSprite(def.componentId);
-                    let container = fx.__containers[def.containerId] || this.container;
+                    container = fx.__containers[def.containerId] || this.container;
                     container.addChild(<Sprite>effect);
                     (<Sprite>effect).blendMode = fx.useBlendModes ? def.blendMode : 0;
                     (<Sprite>effect).tint = def.tint;

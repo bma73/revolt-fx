@@ -10,7 +10,7 @@ export class MovieClip extends PIXI.AnimatedSprite {
     public __fx: FX;
 
     constructor(componentId: string, textures: string[], anchorX?: number, anchorY?: number) {
-        let t = [];
+        let t = <PIXI.Texture[]>[];
         let l = textures.length;
         for (let i = 0; i < l; i++) {
             t.push(PIXI.Texture.from(textures[i]));
@@ -28,8 +28,8 @@ export class MovieClip extends PIXI.AnimatedSprite {
     public recycle() {
         this.alpha = 1;
         this.tint = 0xffffff;
-        (<PIXI.Transform>this.transform).rotation = 0;
-        (<PIXI.Transform>this.transform).scale.set(1);
+        this.rotation = 0;
+        this.scale.set(1);
         if (this.parent) this.parent.removeChild(this);
         this.gotoAndStop(0);
         this.__fx.__recycleMovieClip(this.componentId, this);
@@ -37,7 +37,6 @@ export class MovieClip extends PIXI.AnimatedSprite {
 
     public dispose() {
         if (this.parent) this.parent.removeChild(this);
-        this.__fx = null;
         this.gotoAndStop(0);
         this.destroy();
     }

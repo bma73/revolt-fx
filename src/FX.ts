@@ -1,5 +1,6 @@
 /// <reference types="pixi.js" />
 
+import { TextureCache } from '@pixi/utils';
 import * as PIXI from "pixi.js";
 import { ParticleEmitter } from "./ParticleEmitter";
 import { LinkedList } from "./util/LinkedList";
@@ -68,17 +69,17 @@ export class FX {
         this._active = false;
     }
 
-    public update(delta?: number) {
+    public update(delta: number = 1) {
         if (!this.active) return;
 
         const t = Date.now();
         let dt = (t - this._timeElapsed) * 0.001;
 
-        if (delta !== undefined) dt *= delta;
+        dt *= delta;
 
         const list = this._effects;
         let node = <BaseEffect>list.first;
-        let next;
+        let next: BaseEffect;
         while (node) {
             next = <BaseEffect>node.next;
             node.update(dt);
@@ -129,7 +130,8 @@ export class FX {
     public loadBundleFiles(bundleSettingsUrl: string, spritesheetUrl: string, spritesheetFilter: string = '', additionalAssets: string[] = []): Promise<IParseSpriteSheetResult> {
         return new Promise(async (resolve, reject) => {
 
-            const data: Record<string, string> = {
+            const data: Record<string, string> =
+            {
                 'rfx_spritesheet': spritesheetUrl,
                 'rfx_bundleSettings': bundleSettingsUrl,
             };
@@ -288,7 +290,13 @@ export class FX {
     }
 
     public parseTextureCache(filter?: string): IParseSpriteSheetResult {
-        return this.parseObject(PIXI.utils.TextureCache, filter);
+
+        if (TextureCache !== undefined) {
+            // Pixi 7.3.x
+            return this.parseObject(TextureCache, filter);
+        }
+
+        return this.parseObject(PIXI['Cache']['_cache'], filter);
     }
 
     public get active(): boolean {
@@ -402,8 +410,22 @@ export class FX {
     // * Private													                               *
     // *********************************************************************************************
     private parseObject(object: any, filter?: string): IParseSpriteSheetResult {
+        let frames: Map<String, PIXI.Texture>;
 
-        const frames = object;
+        if (object instanceof Map) {
+            frames = new Map();
+            const mapObject = object as Map<any, any>;
+            const values = mapObject.values();
+
+            for (const [key, value] of mapObject) {
+                if (value instanceof PIXI.Texture) {
+                    frames[key] = value;
+                }
+            }
+        } else {
+            frames = object as Map<String, PIXI.Texture>;
+        }
+
         const mcs: Record<any, any> = {};
         const result: IParseSpriteSheetResult = { sprites: [], movieClips: [] };
         for (let i in frames) {
