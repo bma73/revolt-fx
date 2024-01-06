@@ -19,7 +19,7 @@ import { LinkedList } from "./util/LinkedList";
 export class FX {
 
     public static settingsVersion: number = 0;
-    public static readonly version: string = '1.3.2';
+    public static readonly version: string = '1.3.3';
     private static _bundleHash: string = '80c6df7fb0d3d898f34ce0031c037fef';
 
     public useBlendModes: boolean = true;
