@@ -1,15 +1,14 @@
 /// <reference types="pixi.js" />
 
-import * as PIXI from "pixi.js";
-import { Node } from "./util/LinkedList";
-import { IParticle, IParticleSettings, FX, IParticleEmitterParent } from "./FX";
-import { Sprite } from "./Sprite";
+import { FX, IParticle, IParticleEmitterParent, IParticleSettings } from "./FX";
+import { MovieClip } from "./MovieClip";
 import { ParticleEmitter } from "./ParticleEmitter";
+import { Sprite } from "./Sprite";
 import { Color } from "./util/Color";
 import { Easing } from "./util/Easing";
-import { Rnd } from "./util/Rnd";
-import { MovieClip } from "./MovieClip";
 import { FXSignal } from "./util/FXSignal";
+import { Node } from "./util/LinkedList";
+import { Rnd } from "./util/Rnd";
 
 export interface IParticleSignals {
     died: FXSignal;
@@ -138,7 +137,7 @@ export class Particle extends Node implements IParticle, IParticleEmitterParent 
 
         settings.addOnTop ? emitter.container.addChild(component) : emitter.container.addChildAt(component, 0);
 
-        component.blendMode = fx.useBlendModes ? (settings.blendMode) : 0;
+        component.blendMode = fx.__getBlendMode(settings.blendMode);
 
         this.startX = component.x;
         this.startY = component.y;
@@ -307,6 +306,7 @@ export class Particle extends Node implements IParticle, IParticleEmitterParent 
             }
 
             if (this.useFloor && this.floorY > 0) {
+
                 if (component.y > this.floorY) {
                     component.y = this.floorY;
                     this.moveSpeedY *= -this.bounceFac;

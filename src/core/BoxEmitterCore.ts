@@ -1,17 +1,16 @@
 /// <reference types="pixi.js" />
 
-import * as PIXI from "pixi.js";
 import { IBoxCoreParams } from "../FX";
 import { Particle } from "../Particle";
-import { ParticleEmitter } from "../ParticleEmitter";
-import { BaseEmitterCore } from "./BaseEmitterCore";
 import { Rnd } from "../util/Rnd";
+import { BaseEmitterCore } from "./BaseEmitterCore";
+import { EmitterType } from "./EmitterType";
 
 
 export class BoxEmitterCore extends BaseEmitterCore {
 
     constructor() {
-        super(BaseEmitterCore.__TYPE_BOX);
+        super(EmitterType.Box);
     }
 
     // *********************************************************************************************

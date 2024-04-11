@@ -1,9 +1,9 @@
-import { Node } from "./util/LinkedList";
-import { IParticle, IParticleSettings, FX, IParticleEmitterParent } from "./FX";
-import { Sprite } from "./Sprite";
-import { ParticleEmitter } from "./ParticleEmitter";
+import { FX, IParticle, IParticleEmitterParent, IParticleSettings } from "./FX";
 import { MovieClip } from "./MovieClip";
+import { ParticleEmitter } from "./ParticleEmitter";
+import { Sprite } from "./Sprite";
 import { FXSignal } from "./util/FXSignal";
+import { Node } from "./util/LinkedList";
 export interface IParticleSignals {
     died: FXSignal;
     bounced: FXSignal;

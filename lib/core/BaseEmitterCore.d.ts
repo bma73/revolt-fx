@@ -1,5 +1,5 @@
-import { Particle } from "../Particle";
 import { IBoxCoreParams, ICircleCoreParams, IRingCoreParams } from "../FX";
+import { Particle } from "../Particle";
 import { ParticleEmitter } from "../ParticleEmitter";
 export declare class BaseEmitterCore {
     type: string;
@@ -15,9 +15,6 @@ export declare class BaseEmitterCore {
     __x: number;
     __y: number;
     __scaleMod: number;
-    static __TYPE_BOX: string;
-    static __TYPE_CIRCLE: string;
-    static __TYPE_RING: string;
     constructor(type: string);
     init(emitter: ParticleEmitter): void;
     emit(particle: Particle): void;

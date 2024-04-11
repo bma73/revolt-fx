@@ -1,3 +1,5 @@
+
+
 export class LinkedList {
 
     public __length: number;
