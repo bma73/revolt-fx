@@ -21,15 +21,7 @@ export interface IParticleEmitterSignals {
     particleUpdated: FXSignal;
 }
 
-interface _IClones {
-    emitters: Record<string, ParticleEmitter>;
-    sequences: Record<string, EffectSequence>;
-};
-
-
 export class ParticleEmitter extends BaseEffect implements IParticleEmitterParent {
-
-
 
     public infinite: boolean;
     public target: PIXI.Container;
@@ -551,7 +543,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
             }
 
             //Clone childs
-            const childs = value.particleSettings.childs;
+            const childs = value.childs;
             for (const spawn of childs) {
                 switch (spawn.type) {
                     case SpawnType.ParticleEmitter:

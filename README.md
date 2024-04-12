@@ -2,7 +2,7 @@
 
 # RevoltFX
 
-> **Compatible with PixiJS 7.3.x and 8.0.0-rc (not full featured yet)**
+> **Compatible with PixiJS 7.3.x and 8.x**
 
 Particle and effect system for PixiJS
 Create particle emitters and time based effect sequences. Emitters and sequences can be nested and spawned on different particle events.
@@ -12,10 +12,11 @@ Create particle emitters and time based effect sequences. Emitters and sequences
 
 
 
-**Check out the samples**  
+## Check out the examples  
 **<https://samples.revoltfx.electronauts.net>**
-> *You'll find the according code here: 
-https://github.com/bma73/revolt-fx/releases/tag/pixijs-4.x as it's currently only working with a Pixi legacy version.*
+
+Github
+https://github.com/bma73/revolt-fx-examples
 
 ![samples](https://samples.revoltfx.electronauts.net/assets/samples.png)
 
@@ -30,9 +31,6 @@ Fork the editor on Github
 
 ![editor](https://samples.revoltfx.electronauts.net/assets/editor.png)
 
-## Code Examples
-
-https://github.com/bma73/revolt-fx-examples
 
 ---
 
@@ -57,8 +55,8 @@ or via script tag
 ```
 
 ```js
-// Pixi 8.0.0-rc
-<script src="https://unpkg.com/pixi.js@8.0.0-rc/dist/pixi.min.js"></script>
+// Pixi 8.x
+<script src="https://unpkg.com/pixi.js/dist/pixi.min.js"></script>
 <script src="https://unpkg.com/revolt-fx/dist/revoltfx.min.js"></script>
 ```
 
