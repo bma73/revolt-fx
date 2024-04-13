@@ -14,12 +14,13 @@ import { BaseEmitterCore } from "./core/BaseEmitterCore";
 import { BoxEmitterCore } from "./core/BoxEmitterCore";
 import { CircleEmitterCore } from "./core/CircleEmitterCore";
 import { RingEmitterCore } from "./core/RingEmitterCore";
+import deepClone from "./util/DeepClone";
 import { LinkedList } from "./util/LinkedList";
 
 export class FX {
 
     public static settingsVersion: number = 0;
-    public static readonly version: string = '1.3.3';
+    public static readonly version: string = '1.3.4';
     private static _bundleHash: string = '80c6df7fb0d3d898f34ce0031c037fef';
 
     public useBlendModes: boolean = true;
@@ -43,6 +44,8 @@ export class FX {
 
     public static ComponentType: any = ComponentType;
     public static EffectSequenceComponentType: any = EffectSequenceComponentType;
+
+    private static _blendModes = ['normal', 'add', 'multiply', 'screen'];
 
     public static __emitterCores: any = {
         circle: CircleEmitterCore,
@@ -315,10 +318,10 @@ export class FX {
      * @param {string} name - The name of the EffectSequence to retrieve.
      * @return {EffectSequence} - The EffectSequence object with the specified name.
      */
-    public getEffectSequence(name: string): EffectSequence {
+    public getEffectSequence(name: string, cloneSettings: boolean = false): EffectSequence {
         const settings = this._nameMaps.effectSequences[name];
         if (!settings) throw new Error(`Settings not defined for '${name}'`);
-        return this.getEffectSequenceById(settings.id);
+        return this.getEffectSequenceById(settings.id, cloneSettings);
     }
 
     /**
@@ -327,9 +330,9 @@ export class FX {
      * @param {string} componentId - The ID of the component.
      * @return {EffectSequence} The retrieved EffectSequence object.
      */
-    public getEffectSequenceById(componentId: string): EffectSequence {
+    public getEffectSequenceById(componentId: string, cloneSettings: boolean = false): EffectSequence {
         const pool = this._cache.effectSequences;
-        let effectSequence;
+        let effectSequence: EffectSequence;
 
         let settings = <IEffectSequenceSettings>this._settingsCache.effectSequences[componentId];
         if (!settings) throw new Error(`Settings not defined for '${componentId}'`);
@@ -340,6 +343,12 @@ export class FX {
         } else {
             effectSequence = pool.pop();
         }
+
+        if (cloneSettings) {
+            settings = deepClone(settings);
+            settings.__isClone = true;
+        }
+
         effectSequence.__applySettings(settings);
         return effectSequence;
     }
@@ -368,9 +377,9 @@ export class FX {
      */
     public getParticleEmitterById(componentId: string, autoRecycleOnComplete: boolean = true, cloneSettings: boolean = false): ParticleEmitter {
         const pool = this._cache.emitters;
-        let emitter;
+        let emitter: ParticleEmitter;
 
-        let settings = <IParticleSettings>this._settingsCache.emitters[componentId];
+        let settings = <IEmitterSettings>this._settingsCache.emitters[componentId];
         if (!settings) throw new Error(`Settings not defined for '${componentId}'`);
 
         if (pool.length == 0) {
@@ -381,11 +390,47 @@ export class FX {
         }
 
         if (cloneSettings) {
-            settings = JSON.parse(JSON.stringify(settings));
+            settings = deepClone(settings);
+            settings.__isClone = true;
         }
         emitter.autoRecycleOnComplete = autoRecycleOnComplete;
         emitter.__applySettings(settings);
         return emitter;
+    }
+
+    /**
+     * Creates a particle emitter from the specified settings.
+     * 
+     * @param {IEmitterSettings} settings - The settings of the emitter to create.
+     * @param {boolean} autoRecycleOnComplete - Whether the emitter should automatically recycle itself when it completes.
+     * @return {ParticleEmitter} The created particle emitter.
+     */
+    public createParticleEmitterFrom(settings: IEmitterSettings, autoRecycleOnComplete: boolean = true): ParticleEmitter {
+        const pool = this._cache.emitters;
+        let emitter: ParticleEmitter;
+        if (pool.length == 0) {
+            emitter = new ParticleEmitter(settings.id);
+            emitter.__fx = this;
+        } else {
+            emitter = pool.pop();
+        }
+        emitter.autoRecycleOnComplete = autoRecycleOnComplete;
+        emitter.__applySettings(settings);
+        return emitter;
+    }
+
+    public createEffectSequenceEmitterFrom(settings: IEffectSequenceSettings): EffectSequence {
+        const pool = this._cache.effectSequences;
+        let effectSequence: EffectSequence;
+
+        if (pool.length == 0) {
+            effectSequence = new EffectSequence(settings.id);
+            effectSequence.__fx = this;
+        } else {
+            effectSequence = pool.pop();
+        }
+        effectSequence.__applySettings(settings);
+        return effectSequence;
     }
 
     /**
@@ -551,6 +596,25 @@ export class FX {
         this._cache.cores[core.type].push(core);
     }
 
+    public __getBlendMode(value: number | String): any {
+        if (PIXI['BLEND_MODES'] === undefined && typeof value == 'number') {
+            return this.useBlendModes ? FX._blendModes[value] : 'normal';
+        }
+        return value;
+    }
+
+    public __getSequenceSettings(componentId: string): IEffectSequenceSettings {
+        let settings = <IEffectSequenceSettings>this._settingsCache.effectSequences[componentId];
+        if (!settings) throw new Error(`Settings not defined for '${componentId}'`);
+        return settings;
+    }
+
+    public __getEmitterSettings(componentId: string): IEmitterSettings {
+        let settings = <IEmitterSettings>this._settingsCache.emitters[componentId];
+        if (!settings) throw new Error(`Settings not defined for '${componentId}'`);
+        return settings;
+    }
+
     // *********************************************************************************************
     // * Private													                               *
     // *********************************************************************************************
@@ -595,6 +659,10 @@ export class FX {
     }
 }
 
+export enum SpawnType {
+    ParticleEmitter,
+    EffectSequence,
+}
 
 // *********************************************************************************************
 // * Interfaces												                                   *
@@ -613,10 +681,6 @@ export interface IBaseEffect {
      */
     id: any;
     /**
-     * The type of the effect.
-     */
-    type: number;
-    /**
      * The container ID associated with the effect.
      */
     containerId: string;
@@ -625,6 +689,7 @@ export interface IBaseEffect {
  * Interface for emitter settings
  */
 export interface IEmitterSettings extends IBaseEffect {
+    __isClone?: boolean;
     /**
      * Core settings for the emitter
      */
@@ -703,7 +768,7 @@ export interface IEmitterSpawn {
     /**
      * Type of the spawn.
      */
-    type: number;
+    type: SpawnType;
 
     /**
      * Scale of the spawn.
@@ -724,7 +789,10 @@ export interface IEmitterSpawn {
      * Identifier of the container for the spawn.
      */
     containerId: string;
+
+    settings?: IEmitterSettings | IEffectSequenceSettings;
 }
+
 
 /**
  * Represents the spawns of an emitter at different stages.
@@ -749,12 +817,19 @@ export interface IEmitterSpawns {
      * Spawns when the emitter completes.
      */
     onComplete: IEmitterSpawn[];
+
+    /**
+     * Iterate over all spawns.
+     * @returns Iterator for all spawns.
+     */
+    [Symbol.iterator](): Iterator<IEmitterSpawn[]>;
 }
 
 /**
  * Represents the settings for an effect sequence.
  */
 export interface IEffectSequenceSettings extends IBaseEffect {
+    __isClone?: boolean;
     /**
      * The effects in the sequence.
      */
@@ -780,6 +855,7 @@ export interface IEffectSequenceSettings extends IBaseEffect {
  * Represents the settings for an effect.
  */
 export interface IEffectSettings {
+
     /**
      * The ID of the component.
      */
@@ -977,6 +1053,7 @@ export interface IBoxCoreParams {
 }
 
 export interface IParticleSettings {
+
     /**
      * The type of component.
      */
@@ -1090,7 +1167,7 @@ export interface IParticleSettings {
     /**
      * The blend mode of the particle.
      */
-    blendMode: number;
+    blendMode: number | String;
 
     /**
      * Flag indicating whether the particle is rendered on top.
@@ -1315,7 +1392,7 @@ export interface IParticleSettings {
 }
 
 /**
- * Parameters for the MovieClipComponent.
+ * Parameters for the  MovieClipComponent.
  */
 export interface IMovieClipComponentParams extends IBaseComponentParams {
     /**

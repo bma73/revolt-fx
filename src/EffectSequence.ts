@@ -1,15 +1,15 @@
 /// <reference types="pixi.js" />
 
 import * as PIXI from "pixi.js";
-import { IEffectSequenceSettings, IEffectSettings, IMovieClipComponentParams } from "./FX";
 import { BaseEffect } from "./BaseEffect";
-import { LinkedList, Node } from "./util/LinkedList";
-import { Sprite } from "./Sprite";
+import { EffectSequenceComponentType } from "./EffectSequenceComponentType";
+import { IEffectSequenceSettings, IEffectSettings, IMovieClipComponentParams } from "./FX";
 import { MovieClip } from "./MovieClip";
 import { ParticleEmitter } from "./ParticleEmitter";
-import { Rnd } from "./util/Rnd";
+import { Sprite } from "./Sprite";
 import { FXSignal } from "./util/FXSignal";
-import { EffectSequenceComponentType } from "./EffectSequenceComponentType";
+import { LinkedList, Node } from "./util/LinkedList";
+import { Rnd } from "./util/Rnd";
 
 export interface IEffectSequenceSignals {
     started: FXSignal;
@@ -106,7 +106,7 @@ export class EffectSequence extends BaseEffect {
                     effect = fx.__getSprite(def.componentId);
                     container = fx.__containers[def.containerId] || this.container;
                     container.addChild(<Sprite>effect);
-                    (<Sprite>effect).blendMode = fx.useBlendModes ? def.blendMode : 0;
+                    (<Sprite>effect).blendMode = fx.__getBlendMode(def.blendMode);
                     (<Sprite>effect).tint = def.tint;
                     (<Sprite>effect).scale.set(Rnd.float(def.scaleMin, def.scaleMax) * Rnd.float(this.settings.scaleMin, this.settings.scaleMax) * this._scaleMod);
                     (<Sprite>effect).alpha = Rnd.float(def.alphaMin, def.alphaMax);
@@ -137,7 +137,7 @@ export class EffectSequence extends BaseEffect {
                     (<MovieClip>effect).gotoAndPlay(0);
                     container = fx.__containers[def.containerId] || this.container;
                     container.addChild(<MovieClip>effect);
-                    (<MovieClip>effect).blendMode = fx.useBlendModes ? def.blendMode : 0;
+                    (<Sprite>effect).blendMode = fx.__getBlendMode(def.blendMode);
                     (<MovieClip>effect).tint = def.tint;
                     (<MovieClip>effect).scale.set(Rnd.float(def.scaleMin, def.scaleMax) * Rnd.float(this.settings.scaleMin, this.settings.scaleMax) * this._scaleMod);
                     (<MovieClip>effect).alpha = Rnd.float(def.alphaMin, def.alphaMax);

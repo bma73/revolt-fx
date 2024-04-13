@@ -1,16 +1,15 @@
 /// <reference types="pixi.js" />
 
-import * as PIXI from "pixi.js";
-import { ICircleCoreParams, FX } from "../FX";
+import { ICircleCoreParams } from "../FX";
 import { Particle } from "../Particle";
-import { ParticleEmitter } from "../ParticleEmitter";
-import { BaseEmitterCore } from "./BaseEmitterCore";
 import { Rnd } from "../util/Rnd";
+import { BaseEmitterCore } from "./BaseEmitterCore";
+import { EmitterType } from "./EmitterType";
 
 export class CircleEmitterCore extends BaseEmitterCore {
 
     constructor() {
-        super(BaseEmitterCore.__TYPE_CIRCLE);
+        super(EmitterType.Circle);
     }
 
     // *********************************************************************************************

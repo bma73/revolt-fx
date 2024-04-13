@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { BaseEffect } from "./BaseEffect";
-import { IEmitterSettings, IParticleEmitterParent } from "./FX";
 import { BaseEmitterCore } from "./core/BaseEmitterCore";
+import { IEmitterSettings, IEmitterSpawn, IParticleEmitterParent } from "./FX";
 import { Particle } from "./Particle";
 import { FXSignal } from "./util/FXSignal";
 export interface IParticleEmitterSignals {
@@ -15,7 +15,7 @@ export interface IParticleEmitterSignals {
 }
 export declare class ParticleEmitter extends BaseEffect implements IParticleEmitterParent {
     infinite: boolean;
-    target: PIXI.DisplayObject;
+    target: PIXI.Container;
     targetOffset: number;
     core: BaseEmitterCore;
     settings: IEmitterSettings | undefined;
@@ -54,7 +54,7 @@ export declare class ParticleEmitter extends BaseEffect implements IParticleEmit
     private stopChildEmitters;
     __removeParticle(particle: Particle): void;
     __removeChildEmitter(emitter: any): void;
-    __subSpawn(particle: Particle, list: any): void;
+    __subSpawn(particle: Particle, list: IEmitterSpawn[]): void;
     __applySettings(value: IEmitterSettings): void;
     __setCore(type: string): void;
 }

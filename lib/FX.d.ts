@@ -29,6 +29,7 @@ export declare class FX {
     };
     static ComponentType: any;
     static EffectSequenceComponentType: any;
+    private static _blendModes;
     static __emitterCores: any;
     constructor();
     /**
@@ -150,14 +151,14 @@ export declare class FX {
      * @param {string} name - The name of the EffectSequence to retrieve.
      * @return {EffectSequence} - The EffectSequence object with the specified name.
      */
-    getEffectSequence(name: string): EffectSequence;
+    getEffectSequence(name: string, cloneSettings?: boolean): EffectSequence;
     /**
      * Retrieves an EffectSequence object by its component ID.
      *
      * @param {string} componentId - The ID of the component.
      * @return {EffectSequence} The retrieved EffectSequence object.
      */
-    getEffectSequenceById(componentId: string): EffectSequence;
+    getEffectSequenceById(componentId: string, cloneSettings?: boolean): EffectSequence;
     /**
      * Retrieves a particle emitter by its name.
      *
@@ -176,6 +177,15 @@ export declare class FX {
      * @return {ParticleEmitter} The retrieved particle emitter.
      */
     getParticleEmitterById(componentId: string, autoRecycleOnComplete?: boolean, cloneSettings?: boolean): ParticleEmitter;
+    /**
+     * Creates a particle emitter from the specified settings.
+     *
+     * @param {IEmitterSettings} settings - The settings of the emitter to create.
+     * @param {boolean} autoRecycleOnComplete - Whether the emitter should automatically recycle itself when it completes.
+     * @return {ParticleEmitter} The created particle emitter.
+     */
+    createParticleEmitterFrom(settings: IEmitterSettings, autoRecycleOnComplete?: boolean): ParticleEmitter;
+    createEffectSequenceEmitterFrom(settings: IEffectSequenceSettings): EffectSequence;
     /**
      * Stops the specified particle emitter.
      *
@@ -223,7 +233,14 @@ export declare class FX {
     __recycleEmitter(emitter: ParticleEmitter): void;
     __recycleEffectSequence(effectSequence: EffectSequence): void;
     __recycleEmitterCore(core: BaseEmitterCore): void;
+    __getBlendMode(value: number | String): any;
+    __getSequenceSettings(componentId: string): IEffectSequenceSettings;
+    __getEmitterSettings(componentId: string): IEmitterSettings;
     private parseObject;
+}
+export declare enum SpawnType {
+    ParticleEmitter = 0,
+    EffectSequence = 1
 }
 /**
  * Represents the base effect interface.
@@ -238,10 +255,6 @@ export interface IBaseEffect {
      */
     id: any;
     /**
-     * The type of the effect.
-     */
-    type: number;
-    /**
      * The container ID associated with the effect.
      */
     containerId: string;
@@ -250,6 +263,7 @@ export interface IBaseEffect {
  * Interface for emitter settings
  */
 export interface IEmitterSettings extends IBaseEffect {
+    __isClone?: boolean;
     /**
      * Core settings for the emitter
      */
@@ -326,7 +340,7 @@ export interface IEmitterSpawn {
     /**
      * Type of the spawn.
      */
-    type: number;
+    type: SpawnType;
     /**
      * Scale of the spawn.
      */
@@ -343,6 +357,7 @@ export interface IEmitterSpawn {
      * Identifier of the container for the spawn.
      */
     containerId: string;
+    settings?: IEmitterSettings | IEffectSequenceSettings;
 }
 /**
  * Represents the spawns of an emitter at different stages.
@@ -364,11 +379,17 @@ export interface IEmitterSpawns {
      * Spawns when the emitter completes.
      */
     onComplete: IEmitterSpawn[];
+    /**
+     * Iterate over all spawns.
+     * @returns Iterator for all spawns.
+     */
+    [Symbol.iterator](): Iterator<IEmitterSpawn[]>;
 }
 /**
  * Represents the settings for an effect sequence.
  */
 export interface IEffectSequenceSettings extends IBaseEffect {
+    __isClone?: boolean;
     /**
      * The effects in the sequence.
      */
@@ -645,7 +666,7 @@ export interface IParticleSettings {
     /**
      * The blend mode of the particle.
      */
-    blendMode: number;
+    blendMode: number | String;
     /**
      * Flag indicating whether the particle is rendered on top.
      */
@@ -830,7 +851,7 @@ export interface IParticleSettings {
     childs: IEmitterSpawn[];
 }
 /**
- * Parameters for the MovieClipComponent.
+ * Parameters for the  MovieClipComponent.
  */
 export interface IMovieClipComponentParams extends IBaseComponentParams {
     /**

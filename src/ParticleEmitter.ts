@@ -2,12 +2,14 @@
 
 import * as PIXI from "pixi.js";
 import { BaseEffect } from "./BaseEffect";
-import { IEmitterSettings, IMovieClipComponentParams, IParticleEmitterParent } from "./FX";
-import { LinkedList } from "./util/LinkedList";
 import { BaseEmitterCore } from "./core/BaseEmitterCore";
+import { EffectSequence } from "./EffectSequence";
+import { IEffectSequenceSettings, IEmitterSettings, IEmitterSpawn, IMovieClipComponentParams, IParticleEmitterParent, SpawnType } from "./FX";
 import { Particle } from "./Particle";
-import { Rnd } from "./util/Rnd";
+import deepClone from "./util/DeepClone";
 import { FXSignal } from "./util/FXSignal";
+import { LinkedList } from "./util/LinkedList";
+import { Rnd } from "./util/Rnd";
 
 export interface IParticleEmitterSignals {
     started: FXSignal;
@@ -19,11 +21,10 @@ export interface IParticleEmitterSignals {
     particleUpdated: FXSignal;
 }
 
-
 export class ParticleEmitter extends BaseEffect implements IParticleEmitterParent {
 
     public infinite: boolean;
-    public target: PIXI.DisplayObject;
+    public target: PIXI.Container;
     public targetOffset: number = 0;
 
     public core: BaseEmitterCore;
@@ -102,7 +103,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
         if (this._hasChildEmitters) {
             while (--l > -1) {
                 const def = s.childs[l];
-                const em = RX.getParticleEmitterById(def.id);
+                const em = !this.settings.__isClone ? RX.getParticleEmitterById(def.id) : RX.createParticleEmitterFrom(<IEmitterSettings>def.settings);
                 const container = RX.__containers[em.settings!.containerId] || this.container;
                 em.init(container, true, (def.scale || 1) * (this._scaleMod || 1));
                 if (def.adoptRotation) {
@@ -471,17 +472,17 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
         }
     }
 
-    public __subSpawn(particle: Particle, list: any) {
+    public __subSpawn(particle: Particle, list: IEmitterSpawn[]) {
         const fx = this.__fx;
         if (list) {
             let l = list.length;
             while (--l > -1) {
                 const def = list[l];
-                let component;
-                let container;
+                let component: ParticleEmitter | EffectSequence;
+                let container: PIXI.Container;
                 switch (def.type) {
                     case 0:
-                        component = fx.getParticleEmitterById(def.id);
+                        component = !this.settings.__isClone ? fx.getParticleEmitterById(def.id) : fx.createParticleEmitterFrom(<IEmitterSettings>def.settings);
                         container = fx.__containers[component.settings.containerId] || this.container;
                         component.init(container, true, (def.scale || 1) * this._scaleMod);
                         if (def.adoptRotation) {
@@ -491,8 +492,9 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
                             component.rotation = component.settings.rotation;
                         }
                         break;
+
                     case 1:
-                        component = fx.getEffectSequenceById(def.id);
+                        component = !this.settings.__isClone ? fx.getEffectSequenceById(def.id) : fx.createEffectSequenceEmitterFrom(<IEffectSequenceSettings>def.settings);
                         container = fx.__containers[component.settings.containerId] || this.container;
                         component.init(container, 0, true, (def.scale || 1) * this._scaleMod);
                         if (def.adoptRotation) {
@@ -522,6 +524,38 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
 
         this._childEmitters.length = 0;
 
+        if (value.__isClone) {
+            //Clone spawns
+            const spawns = value.particleSettings.spawn;
+            for (const key in spawns) {
+                const list = spawns[key];
+                for (const spawn of list) {
+                    switch (spawn.type) {
+                        case SpawnType.ParticleEmitter:
+                            spawn.settings = deepClone(fx.__getEmitterSettings(spawn.id));
+                            break;
+                        case SpawnType.EffectSequence:
+                            spawn.settings = deepClone(fx.__getSequenceSettings(spawn.id));
+                            break;
+                    }
+                    spawn.settings.__isClone = true;
+                }
+            }
+
+            //Clone childs
+            const childs = value.childs;
+            for (const spawn of childs) {
+                switch (spawn.type) {
+                    case SpawnType.ParticleEmitter:
+                        spawn.settings = deepClone(fx.__getEmitterSettings(spawn.id));
+                        break;
+                    case SpawnType.EffectSequence:
+                        spawn.settings = deepClone(fx.__getSequenceSettings(spawn.id));
+                        break;
+                }
+                spawn.settings.__isClone = true;
+            }
+        }
     }
 
     public __setCore(type: string) {
@@ -532,10 +566,10 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
     }
 
     // *********************************************************************************************
-    // * Private																	                                        			   *
+    // * Private																	               *
     // *********************************************************************************************
 
     // *********************************************************************************************
-    // * Events															                                        						   *
+    // * Events															                           *
     // *********************************************************************************************
 }

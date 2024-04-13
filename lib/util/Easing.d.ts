@@ -1,3 +1,36 @@
+export declare enum EasingType {
+    Linear = "linear",
+    EaseInQuad = "easeInQuad",
+    EaseOutQuad = "easeOutQuad",
+    EaseInOutQuad = "easeInOutQuad",
+    EaseInCubic = "easeInCubic",
+    EaseOutCubic = "easeOutCubic",
+    EaseInOutCubic = "easeInOutCubic",
+    EaseInQuart = "easeInQuart",
+    EaseOutQuart = "easeOutQuart",
+    EaseInOutQuart = "easeInOutQuart",
+    EaseInQuint = "easeInQuint",
+    EaseOutQuint = "easeOutQuint",
+    EaseInOutQuint = "easeInOutQuint",
+    EaseInSine = "easeInSine",
+    EaseOutSine = "easeOutSine",
+    EaseInOutSine = "easeInOutSine",
+    EaseInExpo = "easeInExpo",
+    EaseOutExpo = "easeOutExpo",
+    EaseInOutExpo = "easeInOutExpo",
+    EaseInCirc = "easeInCirc",
+    EaseOutCirc = "easeOutCirc",
+    EaseInOutCirc = "easeInOutCirc",
+    EaseInElastic = "easeInElastic",
+    EaseOutElastic = "easeOutElastic",
+    EaseInOutElastic = "easeInOutElastic",
+    EaseInBack = "easeInBack",
+    EaseOutBack = "easeOutBack",
+    EaseInOutBack = "easeInOutBack",
+    EaseInBounce = "easeInBounce",
+    EaseOutBounce = "easeOutBounce",
+    EaseInOutBounce = "easeInOutBounce"
+}
 export declare class Easing {
     static linear(t: number, b: number, c: number, d: number): number;
     static easeInQuad(t: number, b: number, c: number, d: number): number;

@@ -1,11 +1,10 @@
 /// <reference types="pixi.js" />
 
-import * as PIXI from "pixi.js";
-import { BaseEmitterCore } from "./BaseEmitterCore";
-import { ParticleEmitter } from "../ParticleEmitter";
-import { Particle } from "../Particle";
 import { IRingCoreParams } from "../FX";
+import { Particle } from "../Particle";
 import { Rnd } from "../util/Rnd";
+import { BaseEmitterCore } from "./BaseEmitterCore";
+import { EmitterType } from "./EmitterType";
 
 export class RingEmitterCore extends BaseEmitterCore {
 
@@ -13,7 +12,7 @@ export class RingEmitterCore extends BaseEmitterCore {
     private _angle: number;
 
     constructor() {
-        super(BaseEmitterCore.__TYPE_RING);
+        super(EmitterType.Ring);
     }
 
     // *********************************************************************************************

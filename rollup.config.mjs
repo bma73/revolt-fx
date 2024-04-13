@@ -1,16 +1,18 @@
-import babel from 'rollup-plugin-babel'
-import { terser } from 'rollup-plugin-terser'
-import commonjs from '@rollup/plugin-commonjs'
+import babel from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import terser from '@rollup/plugin-terser';
+
+
 
 const babelConfig = {
     babelrc: false,
-    runtimeHelpers: true,
+    babelHelpers: 'runtime',
     presets: [
-        '@babel/preset-env'
+        ['@babel/preset-env']
     ],
     plugins: [
-        ["@babel/plugin-transform-runtime", {
+        ['@babel/plugin-transform-runtime', {
             "regenerator": true
         }]
     ]
