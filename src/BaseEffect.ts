@@ -1,7 +1,7 @@
 /// <reference types="pixi.js" />
 
 import * as PIXI from "pixi.js";
-import { IEffectSequenceSettings, IEmitterSettings, FX, IParticleEmitterParent } from "./FX";
+import { FX, IEffectSequenceSettings, IEmitterSettings } from "./FX";
 import { Node } from "./util/LinkedList";
 
 export class BaseEffect extends Node {
@@ -19,7 +19,7 @@ export class BaseEffect extends Node {
     protected _rotation: number = 0;
     protected _alpha: number = 0;
 
-    protected _scale: PIXI.Point = new PIXI.Point();
+    protected _scale: PIXI.Point = new PIXI.Point(1, 1);
     protected _time: number = 0;
 
     protected _active: boolean = false;

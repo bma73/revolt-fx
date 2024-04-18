@@ -52,6 +52,7 @@ export declare class ParticleEmitter extends BaseEffect implements IParticleEmit
     get on(): IParticleEmitterSignals;
     private recycleParticles;
     private stopChildEmitters;
+    __addChildEmitter(def: IEmitterSpawn): void;
     __removeParticle(particle: Particle): void;
     __removeChildEmitter(emitter: any): void;
     __subSpawn(particle: Particle, list: IEmitterSpawn[]): void;

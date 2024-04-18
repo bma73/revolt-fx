@@ -1,4 +1,4 @@
-import { ComponentType } from "../ComponentType";
+/*import { ComponentType } from "../ComponentType";
 import { EmitterType } from "../core/EmitterType";
 import { IBoxCoreParams, ICircleCoreParams, ICoreSettings, IEmitterSettings, IEmitterSpawn, IEmitterSpawns, IMovieClipComponentParams, IMovieClipSettings, IParticleSettings, IRingCoreParams, ISpriteSettings, SpawnType } from "../FX";
 import { EasingType } from "../util/Easing";
@@ -180,4 +180,4 @@ export class ParticleSettingsData implements IParticleSettings {
 
     constructor(public componentId: string) {
     }
-}
+}*/

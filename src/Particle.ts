@@ -143,24 +143,24 @@ export class Particle extends Node implements IParticle, IParticleEmitterParent 
         this.startY = component.y;
 
         this.useGravity = emitter.settings.useGravity;
-        this.useScale = settings.useScale;
-        this.useRotation = settings.useRotation;
-        this.useAlpha = settings.useAlpha;
-        this.useTint = settings.useTint;
+        this.useScale = settings.scale.useScale;
+        this.useRotation = settings.rotation.useRotation;
+        this.useAlpha = settings.alpha.useAlpha;
+        this.useTint = settings.tint.useTint;
         this.useSpawns = settings.useSpawns;
         this.useChilds = settings.useChilds;
-        this.useMotion = settings.useMotion;
+        this.useMotion = settings.motion.useMotion;
 
         if (this.useGravity) {
             this.gravity = emitter.settings.gravity;
             this.useFloor = emitter.settings.useFloor;
             this.floorY = emitter.settings.floorY;
-            this.bounceFac = Rnd.float(settings.bounceFacMin, settings.bounceFacMax) * scaleMod;
-            this.friction = 1 - Rnd.float(settings.frictionMin, settings.frictionMax) * scaleMod;
+            this.bounceFac = Rnd.float(settings.motion.bounceFacMin, settings.motion.bounceFacMax) * scaleMod;
+            this.friction = 1 - Rnd.float(settings.motion.frictionMin, settings.motion.frictionMax) * scaleMod;
             this._spawnOnBounce = settings.spawn.onBounce.length > 0;
-            this.useAlign = settings.align;
-            if (settings.useMotion) {
-                const speed = Rnd.float(settings.moveSpeedMin, settings.moveSpeedMax);
+            this.useAlign = settings.motion.align;
+            if (settings.motion.useMotion) {
+                const speed = Rnd.float(settings.motion.moveSpeedMin, settings.motion.moveSpeedMax);
                 this.moveSpeedX = speed * this.dx * scaleMod;
                 this.moveSpeedY = speed * this.dy * scaleMod;
             } else {
@@ -168,11 +168,11 @@ export class Particle extends Node implements IParticle, IParticleEmitterParent 
             }
 
         } else {
-            if (settings.useMotion) {
-                const d = this.distance = Rnd.integer(settings.distanceMin, settings.distanceMax) * 0.8 * scaleMod;
+            if (settings.motion.useMotion) {
+                const d = this.distance = Rnd.integer(settings.motion.distanceMin, settings.motion.distanceMax) * 0.8 * scaleMod;
                 this.deltaX = ((component.x + d * this.dx) - this.startX) * 0.8;
                 this.deltaY = ((component.y + d * this.dy) - this.startY) * 0.8;
-                this.distanceEase = (Easing as any)[settings.distanceEase];
+                this.distanceEase = (Easing as any)[settings.motion.distanceEase];
                 this.useAlign = false;
             } else {
                 component.x = this.startX;
@@ -181,70 +181,74 @@ export class Particle extends Node implements IParticle, IParticleEmitterParent 
         }
 
 
-        if (settings.useRotation && settings.randomStartRotation && !this.useAlign) {
+        if (settings.rotation.useRotation && settings.rotation.randomStartRotation && !this.useAlign) {
             component.rotation = Rnd.float(0, 6.28319);
         }
 
-        if (settings.useAlpha) {
-            this.alphaStart = component.alpha = Rnd.float(settings.alphaStartMin, settings.alphaStartMax);
-            this.alphaDelta = Rnd.float(settings.alphaEndMin, settings.alphaEndMax) - this.alphaStart;
-            this.alphaEase = (Easing as any)[settings.alphaEase] || null;
+        if (settings.alpha.useAlpha) {
+            this.alphaStart = component.alpha = Rnd.float(settings.alpha.alphaStartMin, settings.alpha.alphaStartMax);
+            this.alphaDelta = Rnd.float(settings.alpha.alphaEndMin, settings.alpha.alphaEndMax) - this.alphaStart;
+            this.alphaEase = (Easing as any)[settings.alpha.alphaEase] || null;
 
-            this.useFadeIn = settings.fadeIn;
-            if (settings.fadeIn) {
-                this.alphaDuration = duration * (1 - settings.fadeInDurationFac);
-                this.fadeInDuration = duration * settings.fadeInDurationFac;
-                this.fadeInEase = (Easing as any)[settings.fadeInEase || 'easeInSine'];
+            this.useFadeIn = settings.fade.fadeIn;
+            if (settings.fade.fadeIn) {
+                this.alphaDuration = duration * (1 - settings.fade.fadeInDurationFac);
+                this.fadeInDuration = duration * settings.fade.fadeInDurationFac;
+                this.fadeInEase = (Easing as any)[settings.fade.fadeInEase || 'easeInSine'];
             }
         }
 
 
-        if (settings.useScale) {
-            this.uniformScale = settings.uniformScale;
-            this.useScaleIn = settings.scaleIn;
+        if (settings.scale.useScale) {
+            this.uniformScale = settings.scale.uniformScale;
+            this.useScaleIn = settings.scale.scaleIn;
 
-            if (settings.useScale) {
-                this.uniformScale = settings.uniformScale;
-                this.scaleEase = (Easing as any)[settings.scaleEase];
+            if (settings.scale.useScale) {
+                this.uniformScale = settings.scale.uniformScale;
+                this.scaleEase = (Easing as any)[settings.scale.scaleEase];
 
-                if (settings.uniformScale) {
-                    this.scaleStart = component.scale.x = component.scale.y = Rnd.float(settings.scaleStartMin, settings.scaleStartMax) * scaleMod;
-                    this.scaleDelta = (Rnd.float(settings.scaleEndMin, settings.scaleEndMax) - this.scaleStart) * scaleMod;
+                if (settings.scale.uniformScale) {
+                    const s = (emitter.scale.x + emitter.scale.y) * 0.5;
+                    this.scaleStart = component.scale.x = component.scale.y = Rnd.float(settings.scale.scaleStartMin, settings.scale.scaleStartMax) * scaleMod * s;
+                    this.scaleDelta = (Rnd.float(settings.scale.scaleEndMin, settings.scale.scaleEndMax) - this.scaleStart) * scaleMod;
                 } else {
-                    this.scaleXStart = component.scale.x = Rnd.float(settings.scaleXStartMin, settings.scaleXStartMax) * scaleMod;
-                    this.scaleXDelta = (Rnd.float(settings.scaleXEndMin, settings.scaleXEndMax) - this.scaleXStart) * scaleMod;
-                    this.scaleXEase = (Easing as any)[settings.scaleXEase];
-                    this.scaleYStart = component.scale.y = Rnd.float(settings.scaleYStartMin, settings.scaleYStartMax) * scaleMod;
-                    this.scaleYDelta = (Rnd.float(settings.scaleYEndMin, settings.scaleYEndMax) - this.scaleYStart) * scaleMod;
-                    this.scaleYEase = (Easing as any)[settings.scaleYEase];
+                    this.scaleXStart = component.scale.x = Rnd.float(settings.scale.scaleXStartMin, settings.scale.scaleXStartMax) * scaleMod;
+                    this.scaleXDelta = (Rnd.float(settings.scale.scaleXEndMin, settings.scale.scaleXEndMax) - this.scaleXStart) * scaleMod;
+                    this.scaleXEase = (Easing as any)[settings.scale.scaleXEase];
+                    this.scaleYStart = component.scale.y = Rnd.float(settings.scale.scaleYStartMin, settings.scale.scaleYStartMax) * scaleMod;
+                    this.scaleYDelta = (Rnd.float(settings.scale.scaleYEndMin, settings.scale.scaleYEndMax) - this.scaleYStart) * scaleMod;
+                    this.scaleYEase = (Easing as any)[settings.scale.scaleYEase];
                 }
 
-                if (settings.scaleIn) {
-                    this.scaleDuration = duration * (1 - settings.scaleInDurationFac);
-                    this.scaleInDuration = duration * settings.scaleInDurationFac;
-                    this.scaleInEase = (Easing as any)[settings.scaleInEase || 'easeInSine'];
+                if (settings.scale.scaleIn) {
+                    this.scaleDuration = duration * (1 - settings.scale.scaleInDurationFac);
+                    this.scaleInDuration = duration * settings.scale.scaleInDurationFac;
+                    this.scaleInEase = (Easing as any)[settings.scale.scaleInEase || 'easeInSine'];
                 }
 
             } else {
-                if (settings.uniformScale) {
-                    component.scale.x = settings.scaleStartMin;
-                    component.scale.y = settings.scaleStartMin;
+                if (settings.scale.uniformScale) {
+                    const s = (emitter.scale.x + emitter.scale.y) * 0.5;
+                    component.scale.x = settings.scale.scaleStartMin * s;
+                    component.scale.y = settings.scale.scaleStartMin * s;
                 } else {
-                    component.scale.x = settings.scaleXStartMin;
-                    component.scale.y = settings.scaleYStartMin;
+                    component.scale.x = settings.scale.scaleXStartMin * emitter.scale.x;
+                    component.scale.y = settings.scale.scaleYStartMin * emitter.scale.y;
                 }
             }
         }
 
 
-        if (settings.useRotation) {
-            this.rotationSpeed = Rnd.float(settings.rotationSpeedMin, settings.rotationSpeedMax) * scaleMod;
-            if (settings.randomRotationDirection) this.rotationSpeed *= Rnd.sign();
+
+
+        if (settings.rotation.useRotation) {
+            this.rotationSpeed = Rnd.float(settings.rotation.rotationSpeedMin, settings.rotation.rotationSpeedMax) * scaleMod;
+            if (settings.rotation.randomRotationDirection) this.rotationSpeed *= Rnd.sign();
         }
 
-        if (settings.useTint) {
-            this.tintEase = (Easing as any)[settings.tintEase];
-            this._color.setRgb(settings.tintStart, settings.tintEnd);
+        if (settings.tint.useTint) {
+            this.tintEase = (Easing as any)[settings.tint.tintEase];
+            this._color.setRgb(settings.tint.tintStart, settings.tint.tintEnd);
         }
 
         if (settings.useChilds) {
@@ -438,6 +442,7 @@ export class Particle extends Node implements IParticle, IParticleEmitterParent 
         if (this.__on.updated.__hasCallback) {
             this.__on.updated.dispatch(this);
         }
+
     }
 
     public stop() {

@@ -70,6 +70,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
         this.container = container;
         this.core.__scaleMod = this._scaleMod = scaleMod;
         if (autoStart) this.start();
+
         return this;
     }
 
@@ -99,20 +100,10 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
         RX.__addActiveEffect(this);
 
         let l = s.childs.length;
-        this._hasChildEmitters = l > 0;
-        if (this._hasChildEmitters) {
-            while (--l > -1) {
-                const def = s.childs[l];
-                const em = !this.settings.__isClone ? RX.getParticleEmitterById(def.id) : RX.createParticleEmitterFrom(<IEmitterSettings>def.settings);
-                const container = RX.__containers[em.settings!.containerId] || this.container;
-                em.init(container, true, (def.scale || 1) * (this._scaleMod || 1));
-                if (def.adoptRotation) {
-                    em.rotation = this._rotation;
-                    em.__adoptRotation = true;
-                }
-                em.__parent = this;
-                this._childEmitters.push(em);
-            }
+
+        while (--l > -1) {
+            const def = s.childs[l];
+            this.__addChildEmitter(def);
         }
 
         this.rotation = this._rotation;
@@ -120,7 +111,6 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
         if (this.__on.started.__hasCallback) {
             this.__on.started.dispatch(this);
         }
-
         return this;
     }
 
@@ -222,26 +212,26 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
 
             const ps = s.particleSettings;
             const p = <Particle>fx.__getParticle();
-            let component;
+            let component: any;
 
-            switch (ps.componentType) {
+            switch (ps.component.componentType) {
                 case 0:
-                    p.componentId = <string>ps.componentId;
+                    p.componentId = <string>ps.component.componentId;
                     component = fx.__getSprite(p.componentId);
                     break;
 
                 case 1:
-                    p.componentId = <string>ps.componentId;
+                    p.componentId = <string>ps.component.componentId;
                     component = fx.__getMovieClip(p.componentId);
-                    if (ps.componentParams) {
-                        component.loop = (<IMovieClipComponentParams>ps.componentParams).loop == null || !(<IMovieClipComponentParams>ps.componentParams).loop ? false : true;
-                        component.animationSpeed = Rnd.float((<IMovieClipComponentParams>ps.componentParams).animationSpeedMin || 1, (<IMovieClipComponentParams>ps.componentParams).animationSpeedMax || 1);
+                    if (ps.component.componentParams) {
+                        component.loop = (<IMovieClipComponentParams>ps.component.componentParams).loop == null || !(<IMovieClipComponentParams>ps.component.componentParams).loop ? false : true;
+                        component.animationSpeed = Rnd.float((<IMovieClipComponentParams>ps.component.componentParams).animationSpeedMin || 1, (<IMovieClipComponentParams>ps.component.componentParams).animationSpeedMax || 1);
                     }
                     component.gotoAndPlay(0);
                     break;
             }
 
-            component.anchor.set(ps.componentParams.anchorX, ps.componentParams.anchorY);
+            component.anchor.set(ps.component.componentParams.anchorX, ps.component.componentParams.anchorY);
 
             p.component = component;
             this.core.emit(p);
@@ -453,6 +443,22 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
     // *********************************************************************************************
     // * Internal																				                                           *
     // *********************************************************************************************
+    public __addChildEmitter(def: IEmitterSpawn) {
+        const RX = this.__fx;
+        const em = !this.settings.__isClone ? RX.getParticleEmitterById(def.id) : RX.createParticleEmitterFrom(<IEmitterSettings>def.settings);
+        const container = RX.__containers[em.settings!.containerId] || this.container;
+        em.init(container, true, (def.scale || 1) * (this._scaleMod || 1));
+        if (def.adoptRotation) {
+            em.rotation = this._rotation;
+            em.__adoptRotation = true;
+        }
+        em.__parent = this;
+        this._childEmitters.push(em);
+        this._hasChildEmitters = true;
+        this.x = this.x;
+        this.y = this.y;
+    }
+
     public __removeParticle(particle: Particle) {
 
         if (particle.useSpawns && this._spawnOnComplete) {
@@ -509,6 +515,7 @@ export class ParticleEmitter extends BaseEffect implements IParticleEmitterParen
     }
 
     public __applySettings(value: IEmitterSettings) {
+
         const fx = this.__fx;
 
         this.__recycled = this._xPosIntialized = this._yPosIntialized = false;

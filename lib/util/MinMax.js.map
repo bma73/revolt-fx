@@ -1,0 +1,1 @@
+{"version":3,"file":"MinMax.js","sourceRoot":"","sources":["../../src/util/MinMax.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,MAAM;IACf,YAAoB,IAAY,EAAU,IAAY,EAAU,cAAsB,CAAC,EAAU,cAAsB,CAAC;QAApG,SAAI,GAAJ,IAAI,CAAQ;QAAU,SAAI,GAAJ,IAAI,CAAQ;QAAU,gBAAW,GAAX,WAAW,CAAY;QAAU,gBAAW,GAAX,WAAW,CAAY;IAExH,CAAC;CACJ"}

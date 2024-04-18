@@ -7,6 +7,8 @@ export { RingEmitterCore } from "./core/RingEmitterCore";
 export { EffectSequence } from "./EffectSequence";
 export { EffectSequenceComponentType } from "./EffectSequenceComponentType";
 export { FX } from "./FX";
+export { ABaseEmitter } from "./library/ABaseEmitter";
+export { SmokeEmitter } from "./library/SmokeEmitter";
 export { MovieClip } from "./MovieClip";
 export { Particle } from "./Particle";
 export { ParticleEmitter } from "./ParticleEmitter";

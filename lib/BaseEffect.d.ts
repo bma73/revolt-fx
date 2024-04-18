@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import { IEffectSequenceSettings, IEmitterSettings, FX } from "./FX";
+import { FX, IEffectSequenceSettings, IEmitterSettings } from "./FX";
 import { Node } from "./util/LinkedList";
 export declare class BaseEffect extends Node {
     componentId: string;

@@ -20,7 +20,7 @@ import { LinkedList } from "./util/LinkedList";
 export class FX {
 
     public static settingsVersion: number = 0;
-    public static readonly version: string = '1.3.4';
+    public static readonly version: string = '1.4.0';
     private static _bundleHash: string = '80c6df7fb0d3d898f34ce0031c037fef';
 
     public useBlendModes: boolean = true;
@@ -667,6 +667,11 @@ export enum SpawnType {
 // *********************************************************************************************
 // * Interfaces												                                   *
 // *********************************************************************************************
+export interface IMinMaxEasing {
+    min?: number;
+    max?: number;
+    ease?: string;
+}
 
 /**
  * Represents the base effect interface.
@@ -822,7 +827,7 @@ export interface IEmitterSpawns {
      * Iterate over all spawns.
      * @returns Iterator for all spawns.
      */
-    [Symbol.iterator](): Iterator<IEmitterSpawn[]>;
+    [Symbol.iterator]?(): Iterator<IEmitterSpawn[]>;
 }
 
 /**
@@ -1052,216 +1057,15 @@ export interface IBoxCoreParams {
     radial: boolean;
 }
 
-export interface IParticleSettings {
-
+export interface IParticleScaleSettings {
     /**
-     * The type of component.
-     */
-    componentType: ComponentType;
-
-    /**
-     * The ID of the component.
-     */
-    componentId: string;
-
-    /**
-     * The parameters for the base component.
-     */
-    componentParams: IBaseComponentParams;
-
-    /**
-     * The minimum duration of the particle.
-     */
-    durationMin: number;
-
-    /**
-     * The maximum duration of the particle.
-     */
-    durationMax: number;
-
-    /**
-     * Flag indicating whether motion is enabled.
-     */
-    useMotion: boolean;
-
-    /**
-     * Flag indicating whether rotation is enabled.
-     */
-    useRotation: boolean;
-
-    /**
-     * Flag indicating whether alpha is enabled.
-     */
-    useAlpha: boolean;
-
-    /**
-     * Flag indicating whether scale is enabled.
-     */
+    * Flag indicating whether scale is enabled.
+    */
     useScale: boolean;
-
     /**
-     * Flag indicating whether tint is enabled.
-     */
-    useTint: boolean;
-
-    /**
-     * Flag indicating whether child particles are enabled.
-     */
-    useChilds: boolean;
-
-    /**
-     * Flag indicating whether spawn particles are enabled.
-     */
-    useSpawns: boolean;
-
-    /**
-     * The minimum distance of the particle.
-     */
-    distanceMin: number;
-
-    /**
-     * The maximum distance of the particle.
-     */
-    distanceMax: number;
-
-    /**
-     * The easing function for the distance.
-     */
-    distanceEase: string;
-
-    /**
-     * The minimum move speed of the particle.
-     */
-    moveSpeedMin: number;
-
-    /**
-     * The maximum move speed of the particle.
-     */
-    moveSpeedMax: number;
-
-    /**
-     * The minimum bounce factor of the particle.
-     */
-    bounceFacMin: number;
-
-    /**
-     * The maximum bounce factor of the particle.
-     */
-    bounceFacMax: number;
-
-    /**
-     * The minimum friction of the particle.
-     */
-    frictionMin: number;
-
-    /**
-     * The maximum friction of the particle.
-     */
-    frictionMax: number;
-
-    /**
-     * Flag indicating whether alignment is enabled.
-     */
-    align: boolean;
-
-    /**
-     * The blend mode of the particle.
-     */
-    blendMode: number | String;
-
-    /**
-     * Flag indicating whether the particle is rendered on top.
-     */
-    addOnTop: boolean;
-
-    /**
-     * The minimum rotation speed of the particle.
-     */
-    rotationSpeedMin: number;
-
-    /**
-     * The maximum rotation speed of the particle.
-     */
-    rotationSpeedMax: number;
-
-    /**
-     * Flag indicating whether the rotation direction is random.
-     */
-    randomRotationDirection: boolean;
-
-    /**
-     * Flag indicating whether the start rotation is random.
-     */
-    randomStartRotation: boolean;
-
-    /**
-     * Flag indicating whether fade in is enabled.
-     */
-    fadeIn: boolean;
-
-    /**
-     * The fade in duration factor of the particle.
-     */
-    fadeInDurationFac: number;
-
-    /**
-     * The easing function for the fade in.
-     */
-    fadeInEase: string;
-
-
-    /** 
-     * Minimum starting alpha value
-     * @type {number}
-     */
-    alphaStartMin: number;
-
-    /**
-     * Maximum starting alpha value
-     * @type {number}
-     */
-    alphaStartMax: number;
-
-    /**
-     * Minimum ending alpha value
-     * @type {number}
-     */
-    alphaEndMin: number;
-
-    /**
-     * Maximum ending alpha value
-     * @type {number}
-     */
-    alphaEndMax: number;
-
-    /**
-     * Easing function for alpha transitions
-     * @type {string}
-     */
-    alphaEase: string;
-
-    /**
-     * Starting tint value
-     * @type {number}
-     */
-    tintStart: number;
-
-    /**
-     * Ending tint value
-     * @type {number}
-     */
-    tintEnd: number;
-
-    /**
-     * Easing function for tint transitions
-     * @type {string}
-     */
-    tintEase: string;
-
-    /**
-     * Whether to scale in or not
-     * @type {boolean}
-     */
+   * Whether to scale in or not
+   * @type {boolean}
+   */
     scaleIn: boolean;
 
     /**
@@ -1371,12 +1175,238 @@ export interface IParticleSettings {
      * @type {string}
      */
     scaleEase: string;
+}
+
+
+export interface IParticleAlphaSettings {
+    /**
+    * Flag indicating whether alpha is enabled.
+    */
+    useAlpha: boolean;
+    /** 
+    * Minimum starting alpha value
+    * @type {number}
+    */
+    alphaStartMin: number;
 
     /**
-     * Whether to stop emitting particles on bounce
-     * @type {boolean}
+     * Maximum starting alpha value
+     * @type {number}
      */
+    alphaStartMax: number;
+
+    /**
+     * Minimum ending alpha value
+     * @type {number}
+     */
+    alphaEndMin: number;
+
+    /**
+     * Maximum ending alpha value
+     * @type {number}
+     */
+    alphaEndMax: number;
+
+    /**
+     * Easing function for alpha transitions
+     * @type {string}
+     */
+    alphaEase: string;
+}
+
+export interface IParticleRotationSettings {
+    /**
+     * Flag indicating whether rotation is enabled.
+     */
+    useRotation: boolean;
+    /**
+     * The minimum rotation speed of the particle.
+     */
+    rotationSpeedMin: number;
+
+    /**
+     * The maximum rotation speed of the particle.
+     */
+    rotationSpeedMax: number;
+
+    /**
+     * Flag indicating whether the rotation direction is random.
+     */
+    randomRotationDirection: boolean;
+
+    /**
+     * Flag indicating whether the start rotation is random.
+     */
+    randomStartRotation: boolean;
+}
+
+export interface IParticleTintSettings {
+    /**
+     * Flag indicating whether tint is enabled.
+     */
+    useTint: boolean;
+    /**
+         * Starting tint value
+         * @type {number}
+         */
+    tintStart: number;
+
+    /**
+     * Ending tint value
+     * @type {number}
+     */
+    tintEnd: number;
+
+    /**
+     * Easing function for tint transitions
+     * @type {string}
+     */
+    tintEase: string;
+}
+
+
+export interface IParticleMotionSettings {
+    /**
+     * Flag indicating whether motion is enabled.
+     */
+    useMotion: boolean;
+    /**
+     * The minimum distance of the particle.
+     * (No gravity is used)
+     */
+    distanceMin: number;
+
+    /**
+     * The maximum distance of the particle.
+     * (No gravity is used)
+     */
+    distanceMax: number;
+
+    /**
+     * The easing function for the distance.
+     * (No gravity is used)
+     */
+    distanceEase: string;
+
+    /**
+     * Align particle rotation to movement direction.
+     * (No gravity is used)
+     */
+    align: boolean;
+
+    /**
+     * The minimum move speed of the particle.
+     * (Gravity is used)
+     */
+    moveSpeedMin: number;
+
+    /**
+     * The maximum move speed of the particle.
+     * (Gravity is used)
+     */
+    moveSpeedMax: number;
+
+    /**
+     * The minimum bounce factor of the particle.
+     * (Gravity is used)
+     */
+    bounceFacMin: number;
+
+    /**
+     * The maximum bounce factor of the particle.
+     * (Gravity is used)
+     */
+    bounceFacMax: number;
+
+    /**
+     * The minimum friction of the particle.
+     * (Gravity is used)
+     */
+    frictionMin: number;
+
+    /**
+     * The maximum friction of the particle.
+     * (Gravity is used)
+     */
+    frictionMax: number;
+}
+
+export interface IParticleComponentSettings {
+    /**
+     * The type of component.
+     */
+    componentType: ComponentType;
+
+    /**
+     * The ID of the component.
+     */
+    componentId: string;
+
+    /**
+     * The parameters for the base component.
+     */
+    componentParams: IBaseComponentParams | IMovieClipComponentParams;
+}
+
+export interface IParticleFadeSettings {
+    /**
+     * Flag indicating whether fade in is enabled.
+     */
+    fadeIn: boolean;
+
+    /**
+     * The fade in duration factor of the particle.
+     */
+    fadeInDurationFac: number;
+
+    /**
+     * The easing function for the fade in.
+     */
+    fadeInEase: string;
+}
+
+export interface IParticleSettings {
+
+    /**
+     * The component settings.
+     */
+    component: IParticleComponentSettings;
+
+    /**
+     * The minimum duration of the particle.
+     */
+    durationMin: number;
+
+    /**
+     * The maximum duration of the particle.
+     */
+    durationMax: number;
+
+    /**
+     * The blend mode of the particle.
+     */
+    blendMode: number | String;
+
+    /**
+     * Flag indicating whether the particle is rendered on top.
+     */
+    addOnTop: boolean;
+
+    /**
+    * Whether to stop emitting particles on bounce
+    * @type {boolean}
+    */
     stopOnBounce: boolean;
+
+    /**
+    * Flag indicating whether child particles are enabled.
+    */
+    useChilds: boolean;
+
+    /**
+     * Flag indicating whether spawn particles are enabled.
+     */
+    useSpawns: boolean;
 
     /**
      * The spawn configuration
@@ -1389,6 +1419,392 @@ export interface IParticleSettings {
      * @type {IEmitterSpawn[]}
      */
     childs: IEmitterSpawn[];
+
+    /**
+     * The scale settings
+     */
+    scale: IParticleScaleSettings;
+
+    /**
+     * The alpha settings
+     */
+    alpha: IParticleAlphaSettings;
+
+    /**
+     * The rotation settings
+     */
+    rotation: IParticleRotationSettings;
+
+    /**
+     * The tint settings
+     */
+    tint: IParticleTintSettings;
+
+    /**
+     * The motion settings
+     */
+    motion: IParticleMotionSettings;
+
+    /**
+     * The fade settings
+     */
+    fade: IParticleFadeSettings;
+
+
+    /*
+    ██████╗ ███████╗██████╗ ██████╗ ███████╗ ██████╗ █████╗ ████████╗███████╗██████╗ 
+    ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗
+    ██║  ██║█████╗  ██████╔╝██████╔╝█████╗  ██║     ███████║   ██║   █████╗  ██║  ██║
+    ██║  ██║██╔══╝  ██╔═══╝ ██╔══██╗██╔══╝  ██║     ██╔══██║   ██║   ██╔══╝  ██║  ██║
+    ██████╔╝███████╗██║     ██║  ██║███████╗╚██████╗██║  ██║   ██║   ███████╗██████╔╝
+    ╚═════╝ ╚══════╝╚═╝     ╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═════╝ 
+                                                                                     
+    */
+
+    /**
+     * The type of component.
+     * @deprecated Use 'component object' instead
+     */
+    componentType?: ComponentType;
+
+    /**
+     * The ID of the component.
+     * @deprecated Use 'component object' instead
+     */
+    componentId?: string;
+
+    /**
+     * The parameters for the base component.
+     * @deprecated Use 'component object' instead
+     */
+    componentParams?: IBaseComponentParams | IMovieClipComponentParams;
+
+    /**
+     * Flag indicating whether motion is enabled.
+     * @deprecated Use 'motion object' instead
+     */
+    useMotion?: boolean;
+
+    /**
+     * Flag indicating whether rotation is enabled.
+     * @deprecated Use 'rotation object' instead
+     */
+    useRotation?: boolean;
+
+    /**
+     * Flag indicating whether alpha is enabled.
+     * @deprecated Use 'alpha object' instead
+     */
+    useAlpha?: boolean;
+
+    /**
+     * Flag indicating whether scale is enabled.
+     * @deprecated Use 'scale object' instead
+     */
+    useScale?: boolean;
+
+    /**
+     * Flag indicating whether tint is enabled.
+     * @deprecated Use 'tint object' instead
+     */
+    useTint?: boolean;
+
+    /**
+     * The minimum distance of the particle.
+     * @deprecated Use 'motion object' instead
+     */
+    distanceMin?: number;
+
+    /**
+     * The maximum distance of the particle.
+     * @deprecated Use 'motion object' instead
+     */
+    distanceMax?: number;
+
+    /**
+     * The easing function for the distance.
+     * @deprecated Use 'motion object' instead
+     */
+    distanceEase?: string;
+
+    /**
+     * The minimum move speed of the particle.
+     * @deprecated Use 'motion object' instead
+     */
+    moveSpeedMin?: number;
+
+    /**
+     * The maximum move speed of the particle.
+     * @deprecated Use 'motion object' instead
+     */
+    moveSpeedMax?: number;
+
+    /**
+     * The minimum bounce factor of the particle.
+     * @deprecated Use 'motion object' instead
+     */
+    bounceFacMin?: number;
+
+    /**
+     * The maximum bounce factor of the particle.
+     * @deprecated Use 'motion object' instead
+     */
+    bounceFacMax?: number;
+
+    /**
+     * The minimum friction of the particle.
+     * @deprecated Use 'motion object' instead
+     */
+    frictionMin?: number;
+
+    /**
+     * The maximum friction of the particle.
+     * @deprecated Use 'motion object' instead
+     */
+    frictionMax?: number;
+
+    /**
+     * Flag indicating whether alignment is enabled.
+     * @deprecated Use 'motion object' instead
+     */
+    align?: boolean;
+
+
+
+    /**
+     * The minimum rotation speed of the particle.
+     * @deprecated Use 'rotation object' instead
+     */
+    rotationSpeedMin?: number;
+
+    /**
+     * The maximum rotation speed of the particle.
+     * @deprecated Use 'rotation object' instead
+     */
+    rotationSpeedMax?: number;
+
+    /**
+     * Flag indicating whether the rotation direction is random.
+     * @deprecated Use 'rotation object' instead
+     */
+    randomRotationDirection?: boolean;
+
+    /**
+     * Flag indicating whether the start rotation is random.
+     * @deprecated Use 'rotation object' instead
+     */
+    randomStartRotation?: boolean;
+
+    /**
+     * Flag indicating whether fade in is enabled.
+     * @deprecated Use 'fade object' instead
+     */
+    fadeIn?: boolean;
+
+    /**
+     * The fade in duration factor of the particle.
+     * @deprecated Use 'fade object' instead
+     */
+    fadeInDurationFac?: number;
+
+    /**
+     * The easing function for the fade in.
+     * @deprecated Use 'fade object' instead
+     */
+    fadeInEase?: string;
+
+
+    /** 
+     * Minimum starting alpha value
+     * @deprecated Use 'alpha object' instead
+     * @type {number}
+     */
+    alphaStartMin?: number;
+
+    /**
+     * Maximum starting alpha value
+     * @deprecated Use 'alpha object' instead
+     * @type {number}
+     */
+    alphaStartMax?: number;
+
+    /**
+     * Minimum ending alpha value
+     * @deprecated Use 'alpha object' instead
+     * @type {number}
+     */
+    alphaEndMin?: number;
+
+    /**
+     * Maximum ending alpha value
+     * @deprecated Use 'alpha object' instead
+     * @type {number}
+     */
+    alphaEndMax?: number;
+
+    /**
+     * Easing function for alpha transitions
+     * @deprecated Use 'alpha object' instead
+     * @type {string}
+     */
+    alphaEase?: string;
+
+    /**
+     * Starting tint value
+     * @deprecated Use 'tint object' instead
+     * @type {number}
+     */
+    tintStart?: number;
+
+    /**
+     * Ending tint value
+     * @deprecated Use 'tint object' instead
+     * @type {number}
+     */
+    tintEnd?: number;
+
+    /**
+     * Easing function for tint transitions
+     * @deprecated Use 'tint object' instead
+     * @type {string}
+     */
+    tintEase?: string;
+
+    /**
+     * Whether to scale in or not
+     * @deprecated Use 'scale object' instead
+     * @type {boolean}
+     */
+    scaleIn?: boolean;
+
+    /**
+     * Duration factor for scale in animation
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleInDurationFac?: number;
+
+    /**
+     * Easing function for scale in animation
+     * @deprecated Use 'scale object' instead
+     * @type {string}
+     */
+    scaleInEase?: string;
+
+    /**
+     * Whether to use uniform scaling or not
+     * @deprecated Use 'scale object' instead
+     * @type {boolean}
+     */
+    uniformScale?: boolean;
+
+    /**
+     * Minimum starting scale X value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleXStartMin?: number;
+
+    /**
+     * Maximum starting scale X value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleXStartMax?: number;
+
+    /**
+     * Minimum ending scale X value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleXEndMin?: number;
+
+    /**
+     * Maximum ending scale X value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleXEndMax?: number;
+
+    /**
+     * Easing function for scale X transitions
+     * @deprecated Use 'scale object' instead
+     * @type {string}
+     */
+    scaleXEase?: string;
+
+    /**
+     * Minimum starting scale Y value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleYStartMin?: number;
+
+    /**
+     * Maximum starting scale Y value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleYStartMax?: number;
+
+    /**
+     * Minimum ending scale Y value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleYEndMin?: number;
+
+    /**
+     * Maximum ending scale Y value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleYEndMax?: number;
+
+    /**
+     * Easing function for scale Y transitions
+     * @deprecated Use 'scale object' instead
+     * @type {string}
+     */
+    scaleYEase?: string;
+
+    /**
+     * Minimum starting scale value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleStartMin?: number;
+
+    /**
+     * Maximum starting scale value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleStartMax?: number;
+
+    /**
+     * Minimum ending scale value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleEndMin?: number;
+
+    /**
+     * Maximum ending scale value
+     * @deprecated Use 'scale object' instead
+     * @type {number}
+     */
+    scaleEndMax?: number;
+
+    /**
+     * @deprecated Use `pr` instead
+     * Easing function for scale transitions
+     * @deprecated Use 'scale object' instead
+     * @type {string}
+     */
+    scaleEase?: string;
+
+
 }
 
 /**

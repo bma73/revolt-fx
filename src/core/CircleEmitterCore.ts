@@ -30,8 +30,8 @@ export class CircleEmitterCore extends BaseEmitterCore {
 
         if (settings.radius > 0) {
             let r = Rnd.float(0, settings.radius) * this.__scaleMod;
-            particle.component.x = (this.__x + this._t * (this.x - this.__x)) + Math.cos(angle) * r;
-            particle.component.y = (this.__y + this._t * (this.y - this.__y)) + Math.sin(angle) * r;
+            particle.component.x = (this.__x + this._t * (this.x - this.__x)) + Math.cos(angle) * r * emitter.scale.x;
+            particle.component.y = (this.__y + this._t * (this.y - this.__y)) + Math.sin(angle) * r * emitter.scale.y;
         } else {
             particle.component.x = this.__x + this._t * (this.x - this.__x);
             particle.component.y = this.__y + this._t * (this.y - this.__y);
