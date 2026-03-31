@@ -49,6 +49,6 @@
     "@rollup/plugin-terser": "^0.4.4"
   },
   "peerDependencies": {
-    "pixi.js": "^7.4.x | ^8.x"
+    "pixi.js": "^7.4.0 || ^8.0.0"
   }
 }
