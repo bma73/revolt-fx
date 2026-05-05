@@ -1,5 +1,3 @@
-import {FX} from "./FX";
-
 export class Sanitizer {
 
     public static sanitizeBundle(bundle: any) {

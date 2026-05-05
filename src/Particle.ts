@@ -1,6 +1,6 @@
 /// <reference types="pixi.js" />
 
-import { FX, IParticle, IParticleEmitterParent, IParticleSettings } from "./FX";
+import type { FX, IParticle, IParticleEmitterParent, IParticleSettings } from "./FX";
 import { MovieClip } from "./MovieClip";
 import { ParticleEmitter } from "./ParticleEmitter";
 import { Sprite } from "./Sprite";

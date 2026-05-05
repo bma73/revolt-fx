@@ -6,8 +6,10 @@ import { EffectSequenceComponentType } from "./EffectSequenceComponentType";
 import { MovieClip } from "./MovieClip";
 import { Particle } from "./Particle";
 import { ParticleEmitter } from "./ParticleEmitter";
+export { SpawnType } from "./SpawnType";
 import { Sprite } from "./Sprite";
 import { BaseEmitterCore } from "./core/BaseEmitterCore";
+import type { SpawnType } from "./SpawnType";
 export declare class FX {
     static settingsVersion: number;
     static readonly version: string;
@@ -237,10 +239,6 @@ export declare class FX {
     __getSequenceSettings(componentId: string): IEffectSequenceSettings;
     __getEmitterSettings(componentId: string): IEmitterSettings;
     private parseObject;
-}
-export declare enum SpawnType {
-    ParticleEmitter = 0,
-    EffectSequence = 1
 }
 /**
  * Represents the base effect interface.

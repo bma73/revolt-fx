@@ -1,7 +1,7 @@
 /// <reference types="pixi.js" />
 
 import * as PIXI from "pixi.js";
-import { IEffectSequenceSettings, IEmitterSettings, FX, IParticleEmitterParent } from "./FX";
+import type { IEffectSequenceSettings, IEmitterSettings, FX, IParticleEmitterParent } from "./FX";
 import { Node } from "./util/LinkedList";
 
 export class BaseEffect extends Node {

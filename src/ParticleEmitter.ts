@@ -3,9 +3,10 @@
 import * as PIXI from "pixi.js";
 import { BaseEffect } from "./BaseEffect";
 import { BaseEmitterCore } from "./core/BaseEmitterCore";
-import { EffectSequence } from "./EffectSequence";
-import { IEffectSequenceSettings, IEmitterSettings, IEmitterSpawn, IMovieClipComponentParams, IParticleEmitterParent, SpawnType } from "./FX";
+import type { EffectSequence } from "./EffectSequence";
+import type { IEffectSequenceSettings, IEmitterSettings, IEmitterSpawn, IMovieClipComponentParams, IParticleEmitterParent } from "./FX";
 import { Particle } from "./Particle";
+import { SpawnType } from "./SpawnType";
 import deepClone from "./util/DeepClone";
 import { FXSignal } from "./util/FXSignal";
 import { LinkedList } from "./util/LinkedList";

@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { BaseEffect } from "./BaseEffect";
-import { IEffectSequenceSettings } from "./FX";
+import type { IEffectSequenceSettings } from "./FX";
 import { FXSignal } from "./util/FXSignal";
 export interface IEffectSequenceSignals {
     started: FXSignal;

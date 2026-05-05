@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { FX } from "./FX";
+import type { FX } from "./FX";
 export declare class MovieClip extends PIXI.AnimatedSprite {
     componentId: string;
     __sequenceEndTime: number;

@@ -1,6 +1,6 @@
 /// <reference types="pixi.js" />
 
-import { FX } from "./FX";
+import type { FX } from "./FX";
 import * as PIXI from 'pixi.js';
 
 export class Sprite extends PIXI.Sprite {
@@ -27,8 +27,8 @@ export class Sprite extends PIXI.Sprite {
     }
 
     public dispose() {
-        this.__fx = null;
         this.recycle();
+        this.__fx = null;
         // @ts-ignore
         this.destroy(false);
     }

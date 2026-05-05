@@ -1,7 +1,7 @@
 /// <reference types="pixi.js" />
 
 import * as PIXI from 'pixi.js';
-import { FX } from "./FX";
+import type { FX } from "./FX";
 
 export class MovieClip extends PIXI.AnimatedSprite {
 
@@ -17,7 +17,7 @@ export class MovieClip extends PIXI.AnimatedSprite {
         }
         super(t);
         this.componentId = componentId;
-        this.anchor.set(0.5, 0.5);
+        this.anchor.set(anchorX ?? 0.5, anchorY ?? 0.5);
         this.loop = false;
         this.__sequenceEndTime = 0;
     }

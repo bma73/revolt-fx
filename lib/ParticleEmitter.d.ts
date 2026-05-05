@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { BaseEffect } from "./BaseEffect";
 import { BaseEmitterCore } from "./core/BaseEmitterCore";
-import { IEmitterSettings, IEmitterSpawn, IParticleEmitterParent } from "./FX";
+import type { IEmitterSettings, IEmitterSpawn, IParticleEmitterParent } from "./FX";
 import { Particle } from "./Particle";
 import { FXSignal } from "./util/FXSignal";
 export interface IParticleEmitterSignals {

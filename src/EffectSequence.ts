@@ -3,7 +3,7 @@
 import * as PIXI from "pixi.js";
 import { BaseEffect } from "./BaseEffect";
 import { EffectSequenceComponentType } from "./EffectSequenceComponentType";
-import { IEffectSequenceSettings, IEffectSettings, IMovieClipComponentParams } from "./FX";
+import type { IEffectSequenceSettings, IEffectSettings, IMovieClipComponentParams } from "./FX";
 import { MovieClip } from "./MovieClip";
 import { ParticleEmitter } from "./ParticleEmitter";
 import { Sprite } from "./Sprite";
@@ -186,7 +186,9 @@ export class EffectSequence extends BaseEffect {
 
         const list = this._elements;
         let node = list.first;
+        let next: Node;
         while (node) {
+            next = node.next;
             node.update(dt);
             if (t > node.data.endTime) {
                 const component = node.data.component;
@@ -199,7 +201,7 @@ export class EffectSequence extends BaseEffect {
                     component.recycle();
                 }
             }
-            node = node.next;
+            node = next;
         }
         if (this.exhausted && list.length == 0) {
             this._active = false;
@@ -320,4 +322,3 @@ export class EffectSequence extends BaseEffect {
         this.__recycled = false;
     }
 }
-

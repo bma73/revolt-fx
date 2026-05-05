@@ -62,6 +62,7 @@ export class LinkedList {
             node.next = node.prev = node.list = null;
             node = next;
         }
+        this.__length = 0;
         this.first = this.last = null;
     }
 

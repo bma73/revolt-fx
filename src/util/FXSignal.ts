@@ -36,6 +36,7 @@ export class FXSignal {
                 if (data.calls % data.callRate != 0) {
                     call = false;
                 }
+                data.calls++;
             }
             if (call) {
                 data.callback.apply(data.scope, params);

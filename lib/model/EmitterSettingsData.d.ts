@@ -1,6 +1,7 @@
 import { ComponentType } from "../ComponentType";
 import { EmitterType } from "../core/EmitterType";
-import { IBoxCoreParams, ICircleCoreParams, ICoreSettings, IEmitterSettings, IEmitterSpawn, IEmitterSpawns, IMovieClipComponentParams, IMovieClipSettings, IParticleSettings, IRingCoreParams, ISpriteSettings, SpawnType } from "../FX";
+import type { IBoxCoreParams, ICircleCoreParams, ICoreSettings, IEmitterSettings, IEmitterSpawn, IEmitterSpawns, IMovieClipComponentParams, IMovieClipSettings, IParticleSettings, IRingCoreParams, ISpriteSettings } from "../FX";
+import { SpawnType } from "../SpawnType";
 import { EasingType } from "../util/Easing";
 export declare class EmitterSettingsData implements IEmitterSettings {
     name: string;

@@ -9,6 +9,7 @@ import { MovieClip } from "./MovieClip";
 import { Particle } from "./Particle";
 import { ParticleEmitter } from "./ParticleEmitter";
 import { Sanitizer } from "./Sanitizer";
+export { SpawnType } from "./SpawnType";
 import { Sprite } from "./Sprite";
 import { BaseEmitterCore } from "./core/BaseEmitterCore";
 import { BoxEmitterCore } from "./core/BoxEmitterCore";
@@ -16,11 +17,12 @@ import { CircleEmitterCore } from "./core/CircleEmitterCore";
 import { RingEmitterCore } from "./core/RingEmitterCore";
 import deepClone from "./util/DeepClone";
 import { LinkedList } from "./util/LinkedList";
+import type { SpawnType } from "./SpawnType";
 
 export class FX {
 
     public static settingsVersion: number = 0;
-    public static readonly version: string = '1.3.4';
+    public static readonly version: string = '1.3.6';
     private static _bundleHash: string = '80c6df7fb0d3d898f34ce0031c037fef';
 
     public useBlendModes: boolean = true;
@@ -169,25 +171,21 @@ export class FX {
      * @param {string[]} additionalAssets - An array of additional asset URLs. Default is an empty array.
      * @return {Promise<IParseSpriteSheetResult>} A promise that resolves to the parsed sprite sheet result.
      */
-    public loadBundleFiles(bundleSettingsUrl: string, spritesheetUrl: string, spritesheetFilter: string = '', additionalAssets: string[] = []): Promise<IParseSpriteSheetResult> {
-        return new Promise(async (resolve, reject) => {
+    public async loadBundleFiles(bundleSettingsUrl: string, spritesheetUrl: string, spritesheetFilter: string = '', additionalAssets: string[] = []): Promise<IParseSpriteSheetResult> {
+        const data: Record<string, string> =
+        {
+            'rfx_spritesheet': spritesheetUrl,
+            'rfx_bundleSettings': bundleSettingsUrl,
+        };
 
-            const data: Record<string, string> =
-            {
-                'rfx_spritesheet': spritesheetUrl,
-                'rfx_bundleSettings': bundleSettingsUrl,
-            };
+        for (var i in additionalAssets) {
+            data[i] = additionalAssets[i];
+        }
 
-            for (var i in additionalAssets) {
-                data[i] = additionalAssets[i];
-            }
+        PIXI.Assets.addBundle('rfx_assets', data);
+        const assets = await PIXI.Assets.loadBundle('rfx_assets');
 
-            PIXI.Assets.addBundle('rfx_assets', data);
-            const assets = await PIXI.Assets.loadBundle('rfx_assets');
-
-            resolve(this.initBundle(assets.rfx_bundleSettings));
-
-        });
+        return this.initBundle(assets.rfx_bundleSettings);
     }
 
     /**
@@ -657,11 +655,6 @@ export class FX {
         }
         return result;
     }
-}
-
-export enum SpawnType {
-    ParticleEmitter,
-    EffectSequence,
 }
 
 // *********************************************************************************************
@@ -1497,6 +1490,3 @@ export interface IAdditionalAsset {
      */
     url: string;
 }
-
-
-

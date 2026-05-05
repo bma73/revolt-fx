@@ -1,4 +1,4 @@
-import { FX } from "./FX";
+import type { FX } from "./FX";
 import * as PIXI from 'pixi.js';
 export declare class Sprite extends PIXI.Sprite {
     componentId: string;
